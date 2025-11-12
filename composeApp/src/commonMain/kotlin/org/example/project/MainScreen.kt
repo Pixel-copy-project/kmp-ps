@@ -45,16 +45,7 @@ import org.example.project.ui.theme.AppBackground
 import org.example.project.ui.theme.NoticeCategory
 import org.example.project.ui.theme.Purple80
 import org.example.project.ui.theme.SectionBackground
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-
-data class GoodsItem(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val price: Int,
-    val imageRes: DrawableResource
-)
 
 @Composable
 fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
@@ -237,7 +228,8 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                             goodsImg = it.imageRes,
                             goodsName = it.name,
                             goodsDescription = it.description,
-                            goodsPrice = "${it.price}원"
+                            goodsPrice = "${it.price}원",
+                            quantity = it.quantity
                         )
                     }
                 }

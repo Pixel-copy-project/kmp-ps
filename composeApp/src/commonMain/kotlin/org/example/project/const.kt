@@ -5,6 +5,16 @@ import kmpproject.composeapp.generated.resources.good_4
 import kmpproject.composeapp.generated.resources.goods_1
 import kmpproject.composeapp.generated.resources.goods_2
 import kmpproject.composeapp.generated.resources.goods_3
+import org.jetbrains.compose.resources.DrawableResource
+
+data class GoodsItem(
+    val id: Int,
+    val name: String,
+    val description: String,
+    val price: Int,
+    val imageRes: DrawableResource,
+    val quantity: Int
+)
 
 val goodsList = listOf(
     GoodsItem(
@@ -13,7 +23,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 17000,
-        imageRes = Res.drawable.goods_1
+        imageRes = Res.drawable.goods_1,
+        quantity = 100,
     ),
     GoodsItem(
         id = 2,
@@ -21,7 +32,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 40000,
-        imageRes = Res.drawable.goods_2
+        imageRes = Res.drawable.goods_2,
+        quantity = 100,
     ),
     GoodsItem(
         id = 3,
@@ -29,7 +41,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 14000,
-        imageRes = Res.drawable.goods_3
+        imageRes = Res.drawable.goods_3,
+        quantity = 100,
     ),
     GoodsItem(
         id = 4,
@@ -37,7 +50,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 18500,
-        imageRes = Res.drawable.good_4
+        imageRes = Res.drawable.good_4,
+        quantity = 0,
     ),
     GoodsItem(
         id = 4,
@@ -45,7 +59,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 18500,
-        imageRes = Res.drawable.good_4
+        imageRes = Res.drawable.good_4,
+        quantity = 100,
     ),
     GoodsItem(
         id = 4,
@@ -53,7 +68,8 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 18500,
-        imageRes = Res.drawable.good_4
+        imageRes = Res.drawable.good_4,
+        quantity = 0,
     ),
     GoodsItem(
         id = 4,
@@ -61,6 +77,7 @@ val goodsList = listOf(
         description = "[예약구매] \n" +
                 "11월 9일 일요일 오후 11시까지",
         price = 18500,
-        imageRes = Res.drawable.good_4
+        imageRes = Res.drawable.good_4,
+        quantity = 100,
     ),
 )

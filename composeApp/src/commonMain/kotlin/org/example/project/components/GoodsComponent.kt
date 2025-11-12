@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
+import kmpproject.composeapp.generated.resources.sold_out
 import org.example.project.ui.theme.GoodsDescription
 import org.example.project.ui.theme.GoodsName
 import org.example.project.ui.theme.GoodsPrice
@@ -27,7 +29,8 @@ fun GoodsComponent(
     goodsImg: DrawableResource,
     goodsName: String,
     goodsDescription: String,
-    goodsPrice: String
+    goodsPrice: String,
+    quantity: Int
 ) {
     Column (
         modifier = modifier.clickable(
@@ -45,8 +48,15 @@ fun GoodsComponent(
                 modifier = Modifier
                     .fillMaxSize()
             )
+            if(quantity <= 0){
+                Image(
+                    painter = painterResource(Res.drawable.sold_out),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
         }
-
         Text(
             text = goodsName,
             fontSize = 18.sp,
