@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,16 +55,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuOpen
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-import kmpproject.composeapp.generated.resources.Res
-import kmpproject.composeapp.generated.resources.compose_multiplatform
 import org.example.project.GoodsDetailScreen
 import org.example.project.GoodsListScreen
 import org.example.project.MainScreen
-import org.jetbrains.compose.resources.painterResource
+import org.example.project.components.MenuDrawer
 
 sealed class AppNav {
     @Serializable
@@ -95,6 +98,19 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
 fun App(
     onNavHostReady: suspend (NavController) -> Unit = {}
 ) {
+    val listState = rememberLazyListState()
+
+    // 2. CoroutineScope 생성 및 기억하기 (비동기 스크롤을 위해)
+    val scope = rememberCoroutineScope()
+
+    // 3. 스크롤 상태에 따라 버튼을 보여줄지 말지 결정하는 상태 (성능 최적화를 위해 derivedStateOf 사용)
+    // 첫 번째 보이는 아이템의 인덱스가 0보다 크면 (즉, 최상단이 아니면) 버튼을 보여준다.
+    val showButton by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0
+        }
+    }
+
     val navController = rememberNavController()
     var showDrawer by remember { mutableStateOf(false) }
     Scaffold(
@@ -131,7 +147,7 @@ fun App(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {  },
+                    onClick = { navController.navigate(AppNav.Main) },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Home,
@@ -152,7 +168,22 @@ fun App(
                     }
                 )
             }
-        }
+        },
+        /*floatingActionButton = {
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        listState.animateScrollToItem(0)
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowUp,
+                    contentDescription = "FAB",
+                    modifier = Modifier.size(48.dp)
+                )
+            }
+        }*/
     ) { paddingValues ->
         NavHost(
             navController = navController,
@@ -186,62 +217,12 @@ fun App(
                 enter = slideInHorizontally() + expandHorizontally() + fadeIn(initialAlpha = 0.3f),
                 exit = slideOutHorizontally() + shrinkHorizontally() + fadeOut()
             ) {
-                SampleDrawer(
+                MenuDrawer(
                     paddingValues = paddingValues,
                     onNavigate = navController::handleNavigation,
+                    onCloseDrawer = { showDrawer = false },
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SampleDrawer(
-    paddingValues: PaddingValues,
-    onNavigate: (NavigationEvent) -> Unit,
-) {
-    var isShow by remember { mutableStateOf(false) }
-    val animAlpha : Float by animateFloatAsState(
-        targetValue = if(isShow) 1f else 0f,
-        animationSpec = keyframes {
-            delayMillis = 700
-            0f at 0 using EaseIn
-            1f at 1000 using EaseOut
-        }
-    )
-    LaunchedEffect(Unit) {
-        isShow = true
-    }
-    Column(
-        modifier = Modifier
-            .padding(paddingValues)
-            .width(200.dp)
-            .fillMaxHeight()
-            .background(Color.White)
-            .verticalScroll(rememberScrollState())
-            .alpha(animAlpha)
-    ) {
-        NavigationDrawerItem(
-            label = { Text("Item 1") },
-            selected = false,
-            onClick = { onNavigate(NavigationEvent.NavigateToMain) }
-        )
-        NavigationDrawerItem(
-            label = { Text("Item 2") },
-            selected = false,
-            onClick = { onNavigate(NavigationEvent.NavigateToGoodsList) }
-        )
-        NavigationDrawerItem(
-            label = { Text("Settings") },
-            selected = false,
-            badge = { Text("20") },
-            onClick = { onNavigate(NavigationEvent.NavigateToGoodsDetail) }
-        )
-        NavigationDrawerItem(
-            label = { Text("Help and feedback") },
-            selected = false,
-            onClick = { /* Handle click */ },
-        )
-        Spacer(Modifier.height(12.dp))
     }
 }
