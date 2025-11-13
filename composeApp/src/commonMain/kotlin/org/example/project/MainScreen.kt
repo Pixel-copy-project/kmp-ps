@@ -228,8 +228,9 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                             goodsImg = it.imageRes,
                             goodsName = it.name,
                             goodsDescription = it.description,
-                            goodsPrice = "${it.price}원",
-                            quantity = it.quantity
+                            goodsPrice = it.price,
+                            quantity = it.quantity,
+                            onNavigate = onNavigate
                         )
                     }
                 }
@@ -281,7 +282,6 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 .fillMaxWidth()
                 .height(233.dp)
                 .padding(start = 12.dp, end = 12.dp)
-                .background(Purple80)
         ){
             Image(
                 painter = painterResource(Res.drawable.katalk),

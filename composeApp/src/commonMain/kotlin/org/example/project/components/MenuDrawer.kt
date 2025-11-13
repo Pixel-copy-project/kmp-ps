@@ -101,7 +101,7 @@ fun MenuDrawer(
                     tint = Color.Gray,
                 )
             },
-            onClick = { onNavigate(NavigationEvent.NavigateToGoodsDetail) }
+            onClick = { onNavigate(NavigationEvent.NavigateToGoodsList) }
         )
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))

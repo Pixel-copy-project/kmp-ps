@@ -31,9 +31,10 @@ fun GoodsListScreen(onNavigate: (NavigationEvent) -> Unit) {
                     goodsImg = goods.imageRes,
                     goodsName = goods.name,
                     goodsDescription = goods.description,
-                    goodsPrice = "${goods.price}원",
+                    goodsPrice = goods.price,
                     modifier = Modifier.fillMaxSize(),
-                    quantity = goods.quantity
+                    quantity = goods.quantity,
+                    onNavigate = onNavigate
                 )
             }
         }

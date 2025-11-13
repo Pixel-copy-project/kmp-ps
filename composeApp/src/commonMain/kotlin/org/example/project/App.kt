@@ -1,41 +1,24 @@
 package com.example.project
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,8 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -55,13 +36,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuOpen
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
-import kotlinx.coroutines.launch
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import org.example.project.CartScreen
 
 import org.example.project.GoodsDetailScreen
 import org.example.project.GoodsListScreen
@@ -76,20 +57,43 @@ sealed class AppNav {
     object GoodsList
 
     @Serializable
-    object GoodsDetail
+    data class GoodsDetail(
+        val goodsName: String,
+        val goodsDescription: String,
+        val goodsPrice: Int,
+        val quantity: Int,
+    )
+
+    @Serializable
+    object Cart
 }
 
 sealed interface NavigationEvent {
     data object NavigateToMain : NavigationEvent
     data object NavigateToGoodsList : NavigationEvent
-    data object NavigateToGoodsDetail : NavigationEvent
+    data class NavigateToGoodsDetail(
+        val goodsName: String,
+        val goodsDescription: String,
+        val goodsPrice: Int,
+        val quantity: Int,
+    ) : NavigationEvent
+
+    data object NavigateToCart : NavigationEvent
 }
 
 fun NavHostController.handleNavigation(event: NavigationEvent) {
     when (event) {
         NavigationEvent.NavigateToMain -> navigate(AppNav.Main)
         NavigationEvent.NavigateToGoodsList -> navigate(AppNav.GoodsList)
-        NavigationEvent.NavigateToGoodsDetail -> navigate(AppNav.GoodsDetail)
+        is NavigationEvent.NavigateToGoodsDetail -> navigate(
+            AppNav.GoodsDetail(
+                event.goodsName,
+                event.goodsDescription,
+                event.goodsPrice,
+                event.quantity,
+            )
+        )
+        NavigationEvent.NavigateToCart -> navigate(AppNav.Cart)
     }
 }
 
@@ -116,10 +120,12 @@ fun App(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(
-                    text = "Pixel store",
-                    textAlign = TextAlign.Center,
-                ) },
+                title = {
+                    Text(
+                        text = "Pixel store",
+                        textAlign = TextAlign.Center,
+                    )
+                },
                 navigationIcon = {
                     IconButton(
                         onClick = { showDrawer = !showDrawer }
@@ -136,7 +142,7 @@ fun App(
             NavigationBar {
                 NavigationBarItem(
                     selected = false,
-                    onClick = {  },
+                    onClick = { },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Home,
@@ -158,7 +164,7 @@ fun App(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {  },
+                    onClick = { navController.navigate(AppNav.Cart) },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Home,
@@ -202,8 +208,18 @@ fun App(
                     onNavigate = navController::handleNavigation,
                 )
             }
-            composable<AppNav.GoodsDetail> {
+            composable<AppNav.GoodsDetail> { backStackEntry ->
+                val goodsDetail = backStackEntry.toRoute<AppNav.GoodsDetail>()
                 GoodsDetailScreen(
+                    onNavigate = navController::handleNavigation,
+                    goodsName = goodsDetail.goodsName,
+                    goodsDescription = goodsDetail.goodsDescription,
+                    goodsPrice = goodsDetail.goodsPrice,
+                    quantity = goodsDetail.quantity,
+                )
+            }
+            composable<AppNav.Cart> {
+                CartScreen(
                     onNavigate = navController::handleNavigation
                 )
             }

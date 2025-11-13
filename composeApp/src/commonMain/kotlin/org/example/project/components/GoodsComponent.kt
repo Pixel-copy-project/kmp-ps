@@ -15,8 +15,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.project.NavigationEvent
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.sold_out
+import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.GoodsDescription
 import org.example.project.ui.theme.GoodsName
 import org.example.project.ui.theme.GoodsPrice
@@ -29,12 +31,21 @@ fun GoodsComponent(
     goodsImg: DrawableResource,
     goodsName: String,
     goodsDescription: String,
-    goodsPrice: String,
-    quantity: Int
+    goodsPrice: Int,
+    quantity: Int,
+    onNavigate: (NavigationEvent) -> Unit
 ) {
     Column (
         modifier = modifier.clickable(
-            onClick = {}
+            onClick = {
+                onNavigate(NavigationEvent.NavigateToGoodsDetail(
+                    goodsName = goodsName,
+                    goodsDescription = goodsDescription,
+                    goodsPrice = goodsPrice,
+                    quantity = quantity,
+                    )
+                )
+            }
         )
     ){
         Box(
@@ -73,7 +84,7 @@ fun GoodsComponent(
                 .padding(top = 8.dp, start = 8.dp)
         )
         Text(
-            text = goodsPrice,
+            text = formatNumberWithComma(goodsPrice) + "원",
             fontSize = 18.sp,
             color = GoodsPrice,
             fontWeight = Bold,
