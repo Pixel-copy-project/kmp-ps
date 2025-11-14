@@ -42,6 +42,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import org.example.project.BuyScreen
 import org.example.project.CartScreen
 
 import org.example.project.GoodsDetailScreen
@@ -66,6 +67,9 @@ sealed class AppNav {
 
     @Serializable
     object Cart
+
+    @Serializable
+    object Buy
 }
 
 sealed interface NavigationEvent {
@@ -79,6 +83,7 @@ sealed interface NavigationEvent {
     ) : NavigationEvent
 
     data object NavigateToCart : NavigationEvent
+    data object NavigateToBuy : NavigationEvent
 }
 
 fun NavHostController.handleNavigation(event: NavigationEvent) {
@@ -94,6 +99,7 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
             )
         )
         NavigationEvent.NavigateToCart -> navigate(AppNav.Cart)
+        NavigationEvent.NavigateToBuy -> navigate(AppNav.Buy)
     }
 }
 
@@ -220,6 +226,11 @@ fun App(
             }
             composable<AppNav.Cart> {
                 CartScreen(
+                    onNavigate = navController::handleNavigation
+                )
+            }
+            composable<AppNav.Buy> {
+                BuyScreen(
                     onNavigate = navController::handleNavigation
                 )
             }

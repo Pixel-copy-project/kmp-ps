@@ -80,6 +80,10 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
         }
+        wasmJsMain.dependencies { // 또는 jsMain
+            // ⭐️ 여기가 핵심! Compose HTML 라이브러리 추가!
+            implementation(compose.html.core)
+        }
     }
 }
 
