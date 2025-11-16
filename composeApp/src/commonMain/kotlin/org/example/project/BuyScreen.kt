@@ -39,11 +39,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.project.NavigationEvent
@@ -423,20 +425,29 @@ fun Modifier.creditCardStyle(
     return Modifier
         .width(112.dp)
         .height(62.dp)
+        .dropShadow(
+            shape = RoundedCornerShape(2.dp),
+            shadow = Shadow(
+                radius = 1.dp,
+                spread = 1.dp,
+                color = Color(0x40000000),
+                offset = DpOffset(x = 0.dp, 2.dp)
+            )
+        )
         .clip(
             shape = RoundedCornerShape(4.dp)
         )
-        .background(color = Color(0xFFEAEAEA))
+        .background(color = Color(0xFFF1F1F1))
         .then(
             other = if(selectedCreditCard == selectCard){
-                    Modifier.border(
-                        width = 2.dp,
-                        color = Color(0xFF555555),
-                        shape = RoundedCornerShape(4.dp)
-                    )
-                }else{
-                    Modifier
-                }
+                Modifier.border(
+                    width = 2.dp,
+                    color = Color(0xFF555555),
+                    shape = RoundedCornerShape(4.dp)
+                )
+            }else{
+                Modifier
+            }
         )
         .padding(8.dp)
         .clickable(
