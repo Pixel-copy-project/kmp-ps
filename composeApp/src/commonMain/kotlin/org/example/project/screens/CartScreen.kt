@@ -1,4 +1,4 @@
-package org.example.project
+package org.example.project.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import org.example.project.components.CartItemComponent
 import org.example.project.ui.theme.AppBackground
+import org.example.project.utill.NavigationEvent
 
 @Composable
 fun CartScreen(

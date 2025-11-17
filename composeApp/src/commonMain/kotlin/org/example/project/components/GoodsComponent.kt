@@ -15,13 +15,13 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.sold_out
 import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.GoodsDescription
 import org.example.project.ui.theme.GoodsName
 import org.example.project.ui.theme.GoodsPrice
+import org.example.project.utill.NavigationEvent
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 

@@ -32,10 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import org.example.project.ui.theme.MenuBackground
 import kotlinx.coroutines.launch // ⭐️ Coroutine을 실행하기 위해 필요!
 import kotlinx.coroutines.delay
+import org.example.project.utill.NavigationEvent
 
 @Composable
 fun MenuDrawer(

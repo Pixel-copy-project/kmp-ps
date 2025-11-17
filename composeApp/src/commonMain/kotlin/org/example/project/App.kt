@@ -1,107 +1,29 @@
 package com.example.project
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.MenuOpen
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import kotlinx.serialization.Serializable
-import org.example.project.BuyScreen
-import org.example.project.CartScreen
-
-import org.example.project.GoodsDetailScreen
-import org.example.project.GoodsListScreen
-import org.example.project.MainScreen
 import org.example.project.components.MenuDrawer
-
-sealed class AppNav {
-    @Serializable
-    object Main
-
-    @Serializable
-    object GoodsList
-
-    @Serializable
-    data class GoodsDetail(
-        val goodsName: String,
-        val goodsDescription: String,
-        val goodsPrice: Int,
-        val quantity: Int,
-    )
-
-    @Serializable
-    object Cart
-
-    @Serializable
-    object Buy
-}
-
-sealed interface NavigationEvent {
-    data object NavigateToMain : NavigationEvent
-    data object NavigateToGoodsList : NavigationEvent
-    data class NavigateToGoodsDetail(
-        val goodsName: String,
-        val goodsDescription: String,
-        val goodsPrice: Int,
-        val quantity: Int,
-    ) : NavigationEvent
-
-    data object NavigateToCart : NavigationEvent
-    data object NavigateToBuy : NavigationEvent
-}
-
-fun NavHostController.handleNavigation(event: NavigationEvent) {
-    when (event) {
-        NavigationEvent.NavigateToMain -> navigate(AppNav.Main)
-        NavigationEvent.NavigateToGoodsList -> navigate(AppNav.GoodsList)
-        is NavigationEvent.NavigateToGoodsDetail -> navigate(
-            AppNav.GoodsDetail(
-                event.goodsName,
-                event.goodsDescription,
-                event.goodsPrice,
-                event.quantity,
-            )
-        )
-        NavigationEvent.NavigateToCart -> navigate(AppNav.Cart)
-        NavigationEvent.NavigateToBuy -> navigate(AppNav.Buy)
-    }
-}
+import org.example.project.screens.*
+import org.example.project.utill.AppNav
+import org.example.project.utill.handleNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -233,6 +155,14 @@ fun App(
                 BuyScreen(
                     onNavigate = navController::handleNavigation
                 )
+            }
+            composable<AppNav.AddressSelect> {
+                AddressSelectScreen(
+                    onNavigate = navController::handleNavigation
+                )
+            }
+            composable<AppNav.AddressAppend>{
+                AddressAppendScreen()
             }
         }
         LaunchedEffect(navController) {

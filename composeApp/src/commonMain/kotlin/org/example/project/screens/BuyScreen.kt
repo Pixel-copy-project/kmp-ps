@@ -1,4 +1,4 @@
-package org.example.project
+package org.example.project.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -39,8 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.draw.innerShadow
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -48,7 +46,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.ibk
 import kmpproject.composeapp.generated.resources.kb
@@ -56,6 +53,7 @@ import kmpproject.composeapp.generated.resources.nh
 import kmpproject.composeapp.generated.resources.shinhan
 import org.example.project.components.BuyItemComponent
 import org.example.project.ui.theme.AppBackground
+import org.example.project.utill.NavigationEvent
 import org.jetbrains.compose.resources.painterResource
 
 enum class CreditCard{
@@ -103,7 +101,7 @@ fun BuyScreen(
                 )
                 Spacer(modifier = Modifier.height(36.dp))
                 Button(
-                    onClick = {},
+                    onClick = { onNavigate(NavigationEvent.NavigateToAddressSelect) },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(Color.White),
                     border = BorderStroke(

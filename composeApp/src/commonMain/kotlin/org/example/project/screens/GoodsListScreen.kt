@@ -1,4 +1,4 @@
-package org.example.project
+package org.example.project.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,8 +10,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.project.NavigationEvent
 import org.example.project.components.GoodsComponent
+import org.example.project.utill.NavigationEvent
+import org.example.project.utill.goodsList
 
 @Composable
 fun GoodsListScreen(onNavigate: (NavigationEvent) -> Unit) {

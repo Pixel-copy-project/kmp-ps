@@ -1,4 +1,4 @@
-package org.example.project
+package org.example.project.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -36,15 +36,15 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.katalk
 import kmpproject.composeapp.generated.resources.main_banner_1
 import org.example.project.components.GoodsComponent
 import org.example.project.ui.theme.AppBackground
 import org.example.project.ui.theme.NoticeCategory
-import org.example.project.ui.theme.Purple80
 import org.example.project.ui.theme.SectionBackground
+import org.example.project.utill.NavigationEvent
+import org.example.project.utill.goodsList
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

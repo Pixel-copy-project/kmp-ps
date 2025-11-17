@@ -1,8 +1,7 @@
-package org.example.project
+package org.example.project.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,13 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.NavigationEvent
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.good_4
 import kmpproject.composeapp.generated.resources.package_notice
 import kmpproject.composeapp.generated.resources.sold_out
-import org.example.project.ui.theme.Purple40
-import org.example.project.ui.theme.Purple80
+import org.example.project.formatNumberWithComma
+import org.example.project.utill.NavigationEvent
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

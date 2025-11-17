@@ -1,4 +1,4 @@
-package org.example.project
+package org.example.project.utill
 
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.good_4
