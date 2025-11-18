@@ -16,6 +16,22 @@ data class GoodsItem(
     val quantity: Int
 )
 
+data class Notice(
+    val title: String,
+    val writer: String,
+    val category: String,
+    val content: String,
+    val createdAt: String,
+)
+
+data class Question(
+    val title: String,
+    val writer: String,
+    val category: String,
+    val content: String,
+    val createdAt: String,
+)
+
 val goodsList = listOf(
     GoodsItem(
         id = 1,
@@ -72,5 +88,193 @@ val goodsList = listOf(
         price = 18500,
         imageRes = Res.drawable.good_4,
         quantity = 100,
+    ),
+)
+
+val NoticeList = listOf(
+    Notice(
+        title = "아구이뽀 맥주컵 굿즈",
+        category = "[신규 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "배송 지연 안내",
+        category = "[지누 티비 트레이]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = " 나나양 점착메모지/스티커/아크릴 스탠드",
+        category = "[신규 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "아구이뽀 맥주컵 굿즈",
+        category = "[신규 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "배송 지연 안내",
+        category = "[지누 티비 트레이]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "아구이뽀 맥주컵 굿즈",
+        category = "[신규 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "배송 지연 안내",
+        category = "[지누 티비 트레이]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "배송 지연 안내",
+        category = "[지누 티비 트레이]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Notice(
+        title = "추가 배송 지연 안내",
+        category = "[설백 6주년 굿즈]",
+        writer = "관리자",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+)
+
+val QuestionList = listOf(
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 전]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 전]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-18"
     ),
 )

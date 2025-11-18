@@ -25,7 +25,20 @@ sealed class AppNav {
     object AddressSelect
     @Serializable
     object AddressAppend
-
+    @Serializable
+    object Notice
+    @Serializable
+    object QA
+    @Serializable
+    object FAQ
+    @Serializable
+    data class Post(
+        val title: String,
+        val writer: String,
+        val category: String,
+        val content: String,
+        val createdAt: String,
+    )
 }
 
 sealed interface NavigationEvent {
@@ -42,6 +55,16 @@ sealed interface NavigationEvent {
     data object NavigateToBuy : NavigationEvent
     data object NavigateToAddressSelect : NavigationEvent
     data object NavigateToAddressAppend : NavigationEvent
+    data object NavigateToNotice : NavigationEvent
+    data object NavigateToQA : NavigationEvent
+    data object NavigateToFAQ : NavigationEvent
+    data class NavigateToPost(
+        val title: String,
+        val writer: String,
+        val category: String,
+        val content: String,
+        val createdAt: String,
+    ) : NavigationEvent
     data object NavigationBack : NavigationEvent
 }
 
@@ -61,6 +84,18 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
         NavigationEvent.NavigateToBuy -> navigate(AppNav.Buy)
         NavigationEvent.NavigateToAddressSelect -> navigate(AppNav.AddressSelect)
         NavigationEvent.NavigateToAddressAppend -> navigate(AppNav.AddressAppend)
+        NavigationEvent.NavigateToNotice -> navigate(AppNav.Notice)
+        NavigationEvent.NavigateToQA -> navigate(AppNav.QA)
+        NavigationEvent.NavigateToFAQ -> navigate(AppNav.FAQ)
+        is NavigationEvent.NavigateToPost -> navigate(
+            AppNav.Post(
+                event.title,
+                event.writer,
+                event.category,
+                event.content,
+                event.createdAt,
+            )
+        )
         NavigationEvent.NavigationBack -> popBackStack()
     }
 }

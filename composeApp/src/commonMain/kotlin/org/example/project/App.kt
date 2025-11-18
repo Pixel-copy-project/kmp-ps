@@ -70,7 +70,7 @@ fun App(
             NavigationBar {
                 NavigationBarItem(
                     selected = false,
-                    onClick = { },
+                    onClick = { navController.navigate(AppNav.Notice) },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Home,
@@ -163,6 +163,25 @@ fun App(
             }
             composable<AppNav.AddressAppend>{
                 AddressAppendScreen()
+            }
+            composable<AppNav.Notice>{
+                NoticeScreen(onNavigate = navController::handleNavigation)
+            }
+            composable<AppNav.QA>{
+                QAScreen(onNavigate = navController::handleNavigation)
+            }
+            composable<AppNav.FAQ>{
+                FAQScreen()
+            }
+            composable<AppNav.Post>{ backStackEntry ->
+                val post = backStackEntry.toRoute<AppNav.Post>()
+                PostScreen(
+                    title = post.title,
+                    writer = post.writer,
+                    category = post.category,
+                    content = post.content,
+                    createdAt = post.createdAt,
+                )
             }
         }
         LaunchedEffect(navController) {
