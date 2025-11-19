@@ -147,7 +147,9 @@ fun MenuDrawer(
                     tint = Color.Gray,
                 )
             },
-            onClick = { /* Handle click */ },
+            onClick = {
+                onCloseDrawer()
+                onNavigate(NavigationEvent.NavigateToReview) },
         )
         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
         NavigationDrawerItem(

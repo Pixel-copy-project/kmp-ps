@@ -244,7 +244,7 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                     .padding(start = 14.dp, end = 14.dp)
                 ,
                 onClick = {
-
+                    onNavigate(NavigationEvent.NavigateToGoodsList)
                 },
                 shape = RoundedCornerShape(
                     8.dp

@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.MenuOpen
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
@@ -31,12 +33,7 @@ fun App(
     onNavHostReady: suspend (NavController) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
-
-    // 2. CoroutineScope 생성 및 기억하기 (비동기 스크롤을 위해)
     val scope = rememberCoroutineScope()
-
-    // 3. 스크롤 상태에 따라 버튼을 보여줄지 말지 결정하는 상태 (성능 최적화를 위해 derivedStateOf 사용)
-    // 첫 번째 보이는 아이템의 인덱스가 0보다 크면 (즉, 최상단이 아니면) 버튼을 보여준다.
     val showButton by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 0
@@ -55,6 +52,16 @@ fun App(
                     )
                 },
                 navigationIcon = {
+                    IconButton(
+                        onClick = { navController.popBackStack() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "BackStackPop"
+                        )
+                    }
+                },
+                actions = {
                     IconButton(
                         onClick = { showDrawer = !showDrawer }
                     ) {
@@ -181,6 +188,22 @@ fun App(
                     category = post.category,
                     content = post.content,
                     createdAt = post.createdAt,
+                )
+            }
+            composable<AppNav.Review> {
+                ReviewScreen(onNavigate = navController::handleNavigation)
+            }
+            composable<AppNav.PostEdit>{ backStackEntry ->
+                val category = backStackEntry.toRoute<AppNav.PostEdit>()
+                PostEditScreen(
+                    postCategory = category.postCategory,
+                    onNavigate = navController::handleNavigation
+                )
+            }
+            composable<AppNav.ReviewEdit>{ backStackEntry ->
+                val reviewItem = backStackEntry.toRoute<AppNav.ReviewEdit>()
+                ReviewEditScreen(
+                    reviewItem = reviewItem.reviewItem
                 )
             }
         }

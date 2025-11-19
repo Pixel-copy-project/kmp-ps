@@ -7,6 +7,11 @@ import kmpproject.composeapp.generated.resources.goods_2
 import kmpproject.composeapp.generated.resources.goods_3
 import org.jetbrains.compose.resources.DrawableResource
 
+enum class QaTag(val answer: String) {
+    BEFORE("답변 전"),
+    COMPLETE("답변 완료"),
+}
+
 data class GoodsItem(
     val id: Int,
     val name: String,
@@ -30,6 +35,7 @@ data class Question(
     val category: String,
     val content: String,
     val createdAt: String,
+    val tag: QaTag = QaTag.BEFORE,
 )
 
 val goodsList = listOf(
@@ -201,18 +207,65 @@ val NoticeList = listOf(
 
 val QuestionList = listOf(
     Question(
-        title = "추가 배송 지연 안내",
+        title = "추가 배송 지연 안내 1",
         category = "[답변 전]",
         writer = "시청자1",
         content = "공지사항",
-        createdAt = "2025-11-18"
+        createdAt = "2025-11-11",
     ),
     Question(
-        title = "추가 배송 지연 안내",
+        title = "추가 배송 지연 안내 2",
         category = "[답변 전]",
         writer = "시청자1",
         content = "공지사항",
-        createdAt = "2025-11-18"
+        createdAt = "2025-11-12"
+    ),
+    Question(
+        title = "추가 배송 지연 안내 3",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-13",
+        tag = QaTag.COMPLETE,
+    ),
+    Question(
+        title = "추가 배송 지연 안내 4",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-14",
+        tag = QaTag.COMPLETE,
+    ),
+    Question(
+        title = "추가 배송 지연 안내 5",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        tag = QaTag.COMPLETE,
+        createdAt = "2025-11-15",
+    ),
+    Question(
+        title = "추가 배송 지연 안내 6",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        createdAt = "2025-11-16",
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        tag = QaTag.COMPLETE,
+        createdAt = "2025-11-18",
+    ),
+    Question(
+        title = "추가 배송 지연 안내",
+        category = "[답변 완료]",
+        writer = "시청자1",
+        content = "공지사항",
+        tag = QaTag.COMPLETE,
+        createdAt = "2025-11-18",
     ),
     Question(
         title = "추가 배송 지연 안내",
@@ -226,55 +279,15 @@ val QuestionList = listOf(
         category = "[답변 완료]",
         writer = "시청자1",
         content = "공지사항",
-        createdAt = "2025-11-18"
+        tag = QaTag.COMPLETE,
+        createdAt = "2025-11-18",
     ),
     Question(
         title = "추가 배송 지연 안내",
         category = "[답변 완료]",
         writer = "시청자1",
         content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
-    ),
-    Question(
-        title = "추가 배송 지연 안내",
-        category = "[답변 완료]",
-        writer = "시청자1",
-        content = "공지사항",
-        createdAt = "2025-11-18"
+        tag = QaTag.COMPLETE,
+        createdAt = "2025-11-18",
     ),
 )
