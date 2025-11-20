@@ -26,7 +26,7 @@ fun ReviewScreen(onNavigate: (NavigationEvent) -> Unit) {
                 IconButton(
                     onClick = {
                         onNavigate(
-                            NavigationEvent.NavigateToReviewEdit()
+                            NavigationEvent.NavigateToReviewEdit("임나은 컵")
                         )
                     },
                     modifier = Modifier

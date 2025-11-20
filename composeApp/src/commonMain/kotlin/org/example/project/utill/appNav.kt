@@ -5,6 +5,16 @@ import kotlinx.serialization.Serializable
 
 sealed class AppNav {
     @Serializable
+    object SignIn
+    @Serializable
+    object BaseSignUp
+    @Serializable
+    object KakaoSignUp
+    @Serializable
+    object GoogleSignUp
+    @Serializable
+    object XSignUp
+    @Serializable
     object Main
 
     @Serializable
@@ -43,7 +53,8 @@ sealed class AppNav {
     data class Post(
         val title: String,
         val writer: String,
-        val category: String,
+        val tag: String,
+        val postCategory: String,
         val content: String,
         val createdAt: String,
     )
@@ -60,9 +71,17 @@ sealed class AppNav {
     data class ReviewEdit(
         val reviewItem: String? = null,
     )
+
+    @Serializable
+    object MyPage
 }
 
 sealed interface NavigationEvent {
+    data object SignIn : NavigationEvent
+    data object BaseSignUp : NavigationEvent
+    data object KakaoSignUp : NavigationEvent
+    data object GoogleSignUp : NavigationEvent
+    data object XSignUp : NavigationEvent
     data object NavigateToMain : NavigationEvent
     data object NavigateToGoodsList : NavigationEvent
     data class NavigateToGoodsDetail(
@@ -82,7 +101,8 @@ sealed interface NavigationEvent {
     data class NavigateToPost(
         val title: String,
         val writer: String,
-        val category: String,
+        val tag: String,
+        val postCategory: String,
         val content: String,
         val createdAt: String,
     ) : NavigationEvent
@@ -94,11 +114,17 @@ sealed interface NavigationEvent {
     data class NavigateToReviewEdit(
         val reviewItem: String? = null,
     ): NavigationEvent
+    data object NavigateToMyPage : NavigationEvent
     data object NavigationBack : NavigationEvent
 }
 
 fun NavHostController.handleNavigation(event: NavigationEvent) {
     when (event) {
+        NavigationEvent.SignIn -> navigate(AppNav.SignIn)
+        NavigationEvent.BaseSignUp -> navigate(AppNav.BaseSignUp)
+        NavigationEvent.KakaoSignUp -> navigate(AppNav.KakaoSignUp)
+        NavigationEvent.GoogleSignUp -> navigate(AppNav.GoogleSignUp)
+        NavigationEvent.XSignUp -> navigate(AppNav.XSignUp)
         NavigationEvent.NavigateToMain -> navigate(AppNav.Main)
         NavigationEvent.NavigateToGoodsList -> navigate(AppNav.GoodsList)
         is NavigationEvent.NavigateToGoodsDetail -> navigate(
@@ -120,7 +146,8 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
             AppNav.Post(
                 event.title,
                 event.writer,
-                event.category,
+                event.tag,
+                event.postCategory,
                 event.content,
                 event.createdAt,
             )
@@ -136,6 +163,7 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
                 event.reviewItem,
             )
         )
+        NavigationEvent.NavigateToMyPage -> navigate(AppNav.MyPage)
         NavigationEvent.NavigationBack -> popBackStack()
     }
 }

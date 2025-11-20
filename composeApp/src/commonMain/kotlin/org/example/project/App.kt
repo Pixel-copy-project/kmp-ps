@@ -1,6 +1,8 @@
 package com.example.project
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,13 +10,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.outlined.MenuOpen
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -53,7 +58,13 @@ fun App(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.popBackStack() }
+                        onClick = {
+                            if(showDrawer){
+                                showDrawer = false
+                            }else{
+                                navController.popBackStack()
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -77,7 +88,22 @@ fun App(
             NavigationBar {
                 NavigationBarItem(
                     selected = false,
-                    onClick = { navController.navigate(AppNav.Notice) },
+                    onClick = {
+                        navController.navigate(AppNav.Notice)
+                              },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Assignment,
+                            contentDescription = "Home",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        navController.navigate(AppNav.Main)
+                              },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Home,
@@ -88,10 +114,12 @@ fun App(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { navController.navigate(AppNav.Main) },
+                    onClick = {
+                        navController.navigate(AppNav.Cart)
+                              },
                     icon = {
                         Icon(
-                            imageVector = Icons.Filled.Home,
+                            imageVector = Icons.Filled.ShoppingCart,
                             contentDescription = "Home",
                             modifier = Modifier.size(32.dp)
                         )
@@ -99,10 +127,12 @@ fun App(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { navController.navigate(AppNav.Cart) },
+                    onClick = {
+                        navController.navigate(AppNav.MyPage)
+                              },
                     icon = {
                         Icon(
-                            imageVector = Icons.Filled.Home,
+                            imageVector = Icons.Filled.Person,
                             contentDescription = "Home",
                             modifier = Modifier.size(32.dp)
                         )
@@ -133,6 +163,16 @@ fun App(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            composable<AppNav.SignIn>{
+                SignInScreen(
+                    onNavigate = navController::handleNavigation,
+                )
+            }
+            composable<AppNav.BaseSignUp>{
+                BaseSignUpScreen(
+                    onNavigate = navController::handleNavigation,
+                )
+            }
             composable<AppNav.Main> {
                 MainScreen(
                     onNavigate = navController::handleNavigation,
@@ -185,9 +225,11 @@ fun App(
                 PostScreen(
                     title = post.title,
                     writer = post.writer,
-                    category = post.category,
+                    tag = post.tag,
+                    postCategory = post.postCategory,
                     content = post.content,
                     createdAt = post.createdAt,
+                    onNavigate = navController::handleNavigation,
                 )
             }
             composable<AppNav.Review> {
@@ -203,7 +245,13 @@ fun App(
             composable<AppNav.ReviewEdit>{ backStackEntry ->
                 val reviewItem = backStackEntry.toRoute<AppNav.ReviewEdit>()
                 ReviewEditScreen(
+                    onNavigate = navController::handleNavigation,
                     reviewItem = reviewItem.reviewItem
+                )
+            }
+            composable<AppNav.MyPage>{
+                MyPageScreen(
+                    onNavigate = navController::handleNavigation,
                 )
             }
         }

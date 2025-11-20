@@ -3,10 +3,8 @@ package org.example.project.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -46,8 +44,10 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
                     NoticeList.take(4).forEach { it ->
                         PostTitleComponent(
                             category = it.category,
+                            tag = it.tag,
                             title = it.title,
                             fontSize = 16,
+                            onNavigate = onNavigate
                         )
                     }
                 }
@@ -106,8 +106,10 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
                 NoticeList.take(10).forEach{ it ->
                     PostTitleComponent(
                         category = it.category,
+                        tag = it.tag,
                         title = it.title,
                         fontSize = 18,
+                        onNavigate = onNavigate
                     )
                 }
             }

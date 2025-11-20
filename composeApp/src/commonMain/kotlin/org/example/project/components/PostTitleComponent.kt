@@ -1,5 +1,6 @@
 package org.example.project.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,19 +12,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.project.utill.NavigationEvent
 
 @Composable
 fun PostTitleComponent(
+    tag: String,
     category: String,
     title: String,
     fontSize: Int,
+    goodsName: String? = null,
+    onNavigate: (NavigationEvent) -> Unit,
 ) {
     Row(
-        modifier = Modifier.padding(horizontal = 8.dp),
+        modifier = Modifier
+            .clickable(
+                onClick = {
+                    onNavigate(
+                        NavigationEvent.NavigateToPost(
+                            title = title,
+                            tag = tag,
+                            postCategory = category,
+                            content = "wgwgwgewgwehewhew",
+                            writer = "wf",
+                            createdAt = "wf",)
+                    )
+                }
+            )
+            .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ){
+    ) {
         Text(
-            text = category,
+            text = tag,
             fontSize = fontSize.sp,
             color = Color(0xFF888888)
         )

@@ -139,8 +139,10 @@ fun QAScreen(onNavigate: (NavigationEvent) -> Unit) {
                 filteredList.take(10).forEach{ it ->
                     PostTitleComponent(
                         category = it.category,
+                        tag = it.tag.answer,
                         title = it.title,
                         fontSize = 18,
+                        onNavigate = onNavigate
                     )
                 }
             }
