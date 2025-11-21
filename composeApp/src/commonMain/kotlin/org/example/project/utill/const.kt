@@ -21,6 +21,15 @@ data class GoodsItem(
     val quantity: Int
 )
 
+data class DisplayGoodsItem(
+    val id: Int,
+    val name: String,
+    val description: String,
+    val price: Int,
+    val imageRes: DrawableResource,
+    val quantity: Int
+)
+
 data class Notice(
     val title: String,
     val writer: String,
@@ -30,7 +39,26 @@ data class Notice(
     val createdAt: String,
 )
 
+data class DisplayNotice(
+    val title: String,
+    val writer: String,
+    val category: String,
+    val tag: String,
+    val content: String,
+    val createdAt: String,
+)
+
 data class Question(
+    val title: String,
+    val writer: String,
+    val category: String,
+    val content: String,
+    val createdAt: String,
+    val tag: QaTag = QaTag.BEFORE,
+    val goodsName: String,
+)
+
+data class DisplayQuestion(
     val title: String,
     val writer: String,
     val category: String,

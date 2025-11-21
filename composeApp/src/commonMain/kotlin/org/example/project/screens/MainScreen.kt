@@ -28,6 +28,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,16 +42,22 @@ import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.katalk
 import kmpproject.composeapp.generated.resources.main_banner_1
 import org.example.project.components.GoodsComponent
+import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground
-import org.example.project.ui.theme.NoticeCategory
 import org.example.project.ui.theme.SectionBackground
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.goodsList
+import org.example.project.utill.NoticeList
+import org.example.project.viewmodel.GoodsViewModel
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
+fun MainScreen(
+    onNavigate: (NavigationEvent) -> Unit,
+    viewModel: GoodsViewModel = GoodsViewModel()
+) {
     val scrollState = rememberScrollState()
+    val goodsUiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -79,11 +87,11 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 .height(138.dp)
                 .background(SectionBackground)
         ) {
-            Row(){
+            Row() {
                 Box(
                     modifier = Modifier
                         .weight(0.4f)
-                ){
+                ) {
                     Text(
                         text = "공지사항\nNotice",
                         textAlign = TextAlign.Center,
@@ -98,67 +106,22 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 Box(
                     modifier = Modifier
                         .weight(0.6f)
-                ){
-                    Column (
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier
                             .padding(top = 12.dp)
                             .align(Alignment.Center)
-                    ){
-                        Row(){
-                            Text(
-                                text = "[신규굿즈]",
-                                color = NoticeCategory,
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
+                    ) {
+                        NoticeList.take(4).forEach {
+                            PostTitleComponent(
+                                tag = it.tag,
+                                category = it.category,
+                                title = it.title,
+                                fontSize = 14,
+                                onNavigate = onNavigate
                             )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "아구이뽀 맥주컵 굿즈",
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                        }
-                        Row(){
-                            Text(
-                                text = "[신규굿즈]",
-                                color = NoticeCategory,
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "아구이뽀 맥주컵 굿즈",
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                        }
-                        Row(){
-                            Text(
-                                text = "[신규굿즈]",
-                                color = NoticeCategory,
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "아구이뽀 맥주컵 굿즈",
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                        }
-                        Row(){
-                            Text(
-                                text = "[신규굿즈]",
-                                color = NoticeCategory,
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "아구이뽀 맥주컵 굿즈",
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                            )
+
                         }
                     }
                 }
@@ -166,6 +129,11 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
             Text(
                 text = "더보기 >>",
                 modifier = Modifier
+                    .clickable(
+                        onClick = {
+                            onNavigate(NavigationEvent.NavigateToNotice)
+                        }
+                    )
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 8.dp, end = 16.dp)
             )
@@ -202,7 +170,7 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                         ),
                         modifier = Modifier
                             .padding(start = 4.dp, end = 4.dp)
-                    ){
+                    ) {
                         Text(
                             text = "카테고리"
                         )
@@ -215,8 +183,8 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 maxLines = 2,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ){
-                goodsList.take(4).forEach { it ->
+            ) {
+                goodsUiState.goodsList.take(4).forEach {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(0.48f)
@@ -241,8 +209,7 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
-                    .padding(start = 14.dp, end = 14.dp)
-                ,
+                    .padding(start = 14.dp, end = 14.dp),
                 onClick = {
                     onNavigate(NavigationEvent.NavigateToGoodsList)
                 },
@@ -253,7 +220,7 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                     width = 2.dp,
                     color = Color(0xFF999999)
                 )
-            ){
+            ) {
                 Row {
                     Text(
                         text = "더 많은 상품 보러가기",
@@ -265,7 +232,7 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                             .padding(top = 6.dp, bottom = 6.dp)
                     )
                     Icon(
-                        imageVector =  Icons.Default.KeyboardArrowRight,
+                        imageVector = Icons.Default.KeyboardArrowRight,
                         contentDescription = null,
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
@@ -282,18 +249,21 @@ fun MainScreen(onNavigate: (NavigationEvent) -> Unit) {
                 .fillMaxWidth()
                 .height(233.dp)
                 .padding(start = 12.dp, end = 12.dp)
-        ){
+        ) {
             Image(
                 painter = painterResource(Res.drawable.katalk),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable{
+                    .clickable {
 
                     }
             )
         }
         Spacer(modifier = Modifier.height(56.dp))
     }
-
 }
+
+@Preview
+@Composable
+fun PreviewMainScreen() = MainScreen(onNavigate = {})

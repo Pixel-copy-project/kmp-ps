@@ -8,21 +8,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.project.components.GoodsComponent
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.goodsList
+import org.example.project.viewmodel.GoodsViewModel
 
 @Composable
-fun GoodsListScreen(onNavigate: (NavigationEvent) -> Unit) {
+fun GoodsListScreen(
+    onNavigate: (NavigationEvent) -> Unit,
+    viewModel: GoodsViewModel = GoodsViewModel()
+) {
+    val goodsUiState by viewModel.uiState.collectAsState()
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        items(goodsList.size){ index ->
-            val goods = goodsList[index]
+        items(goodsUiState.goodsList.size){ index ->
+            val goods = goodsUiState.goodsList[index]
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.48f)
