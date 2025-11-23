@@ -9,6 +9,8 @@ import org.example.project.utill.GoodsItem
 import org.example.project.utill.Notice
 import org.example.project.utill.QaTag
 import org.example.project.utill.Question
+import io.ktor.client.*
+import io.ktor.client.request.get
 
 class PixelRepository: GoodsRepository, NoticeRepository, QuestionRepository {
     private val goodsList = listOf<GoodsItem>(

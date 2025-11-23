@@ -60,6 +60,10 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            implementation("io.ktor:ktor-client-core:2.3.7")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+            implementation("io.ktor:ktor-client-logging:2.3.7")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

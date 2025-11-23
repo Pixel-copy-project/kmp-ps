@@ -2,6 +2,7 @@ package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,29 +10,29 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.project.ioDispatcher
 import org.example.project.repository.PixelRepository
-import org.example.project.utill.DisplayGoodsItem
-import org.example.project.utill.GoodsItem
+import org.example.project.utill.DisplayNotice
+import org.example.project.utill.Notice
 
-class GoodsViewModel(
+class NoticeViewModel(
     private val repository: PixelRepository = PixelRepository()
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(GoodsUiState(isLoading = true))
-    val uiState: StateFlow<GoodsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(NoticeUiState(isLoading = true))
+    val uiState: StateFlow<NoticeUiState> = _uiState.asStateFlow()
 
     init{
-        loadGoods()
+        loadNotice()
     }
 
-    private fun loadGoods(){
+    fun loadNotice(){
         viewModelScope.launch(ioDispatcher) {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try{
-                val goods = repository.getGoodsList()
-                val displayGoods = goods.map { it.toDisplay() }
+                val notice = repository.getNoticeList()
+                val displayNotice = notice.map { it.toDisplay() }
 
                 _uiState.update{
                     it.copy(
-                        goodsList = displayGoods,
+                        noticeList = displayNotice,
                         isLoading = false,
                         error = null,
                     )
@@ -41,18 +42,16 @@ class GoodsViewModel(
             }
         }
     }
-
-    fun getByName(name: String){
-    }
 }
 
-fun GoodsItem.toDisplay(): DisplayGoodsItem{
-    return DisplayGoodsItem(
-        id = this.id,
-        name = this.name,
-        description = this.description,
-        price = this.price,
-        imageRes = this.imageRes,
-        quantity = this.quantity
+
+fun Notice.toDisplay(): DisplayNotice{
+    return DisplayNotice(
+        title = this.title,
+        writer = this.writer,
+        tag = this.tag,
+        content = this.content,
+        createdAt = this.createdAt,
+        category = this.category
     )
 }

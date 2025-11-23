@@ -1,5 +1,7 @@
 package org.example.project
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import platform.UIKit.UIDevice
 import platform.Foundation.*
 
@@ -7,6 +9,7 @@ class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 }
 
+actual val ioDispatcher: CoroutineDispatcher = Dispatchers.Default
 actual fun getPlatform(): Platform = IOSPlatform()
 actual fun formatNumberWithComma(number: Int): String{
     val formatter = NSNumberFormatter().apply {
