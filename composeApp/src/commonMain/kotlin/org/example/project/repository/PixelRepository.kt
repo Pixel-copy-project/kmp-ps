@@ -11,8 +11,11 @@ import org.example.project.utill.QaTag
 import org.example.project.utill.Question
 import io.ktor.client.*
 import io.ktor.client.request.get
+import org.example.project.utill.Address
 
-class PixelRepository: GoodsRepository, NoticeRepository, QuestionRepository {
+class PixelRepository:
+    GoodsRepository, NoticeRepository, QuestionRepository, CartRepository, AddressRepository
+{
     private val goodsList = listOf<GoodsItem>(
         GoodsItem(
             id = 1,
@@ -301,6 +304,31 @@ class PixelRepository: GoodsRepository, NoticeRepository, QuestionRepository {
         ),
     )
 
+    var cart: List<GoodsItem> = listOf(
+        goodsList[0], goodsList[1]
+    )
+
+    var addressList: List<Address> = listOf(
+        Address(
+            addressName = "우리집",
+            addressDetail = "1004동 2005호",
+            addressRoad = "경기 경기 중앙로 중앙로 20 30",
+            addressZipCode = "37748"
+        ),
+        Address(
+            addressName ="사무실",
+            addressDetail = "1004동 2005호",
+            addressRoad = "경기 경기 중앙로 중앙로 40 30",
+            addressZipCode = "37748"
+        ),
+        Address(
+            addressName ="자취방",
+            addressDetail = "1004동 2005호",
+            addressRoad = "경기 경기 중앙로 중앙로 60 30",
+            addressZipCode = "37748"
+        ),
+    )
+
     override suspend fun getGoodsList(): List<GoodsItem>{
         return goodsList
     }
@@ -327,5 +355,13 @@ class PixelRepository: GoodsRepository, NoticeRepository, QuestionRepository {
 
     override suspend fun getQuestionByTitle(title: String): Question? {
         return questionList.find { it.title == title }
+    }
+
+    override suspend fun getCart(): List<GoodsItem> {
+        return cart
+    }
+
+    override suspend fun getAddressList(): List<Address> {
+        return addressList
     }
 }

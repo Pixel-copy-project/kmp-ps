@@ -1,18 +1,7 @@
 package org.example.project.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -30,10 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.goods_1
+import org.example.project.formatNumberWithComma
+import org.example.project.utill.DisplayGoodsItem
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun CartItemComponent(rootModifier: Modifier = Modifier) {
+fun CartItemComponent(
+    rootModifier: Modifier = Modifier,
+    goodsItem: DisplayGoodsItem
+) {
     Box(
         modifier = rootModifier
     ){
@@ -62,14 +56,14 @@ fun CartItemComponent(rootModifier: Modifier = Modifier) {
                         .padding(start = 10.dp, top = 12.dp),
                 ) {
                     Text(
-                        text = "상품 이름",
+                        text = goodsItem.name,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color(0xFF666666),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "[예약구매] 11월 9일 일요일 오후 11시까지",
+                        text = goodsItem.description,
                         fontSize = 14.sp,
                         modifier = Modifier.width(204.dp)
                     )
@@ -112,7 +106,7 @@ fun CartItemComponent(rootModifier: Modifier = Modifier) {
                 }
                 Spacer(modifier = Modifier.width(100.dp))
                 Text(
-                    text = "17,000원",
+                    text = "${formatNumberWithComma(goodsItem.price)}원",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium,
                 )

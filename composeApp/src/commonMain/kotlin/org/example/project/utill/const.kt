@@ -12,6 +12,20 @@ enum class QaTag(val answer: String) {
     COMPLETE("[답변 완료]"),
 }
 
+data class Address(
+    val addressName: String,
+    val addressRoad: String,
+    val addressDetail: String,
+    val addressZipCode: String,
+)
+
+data class DisplayAddress(
+    val addressName: String,
+    val addressRoad: String,
+    val addressDetail: String,
+    val addressZipCode: String,
+)
+
 data class GoodsItem(
     val id: Int,
     val name: String,

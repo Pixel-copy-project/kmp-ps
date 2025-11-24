@@ -1,8 +1,6 @@
 package com.example.project
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,7 +17,6 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -31,6 +28,8 @@ import org.example.project.components.MenuDrawer
 import org.example.project.screens.*
 import org.example.project.utill.AppNav
 import org.example.project.utill.handleNavigation
+import org.example.project.viewmodel.AddressViewModel
+import org.example.project.viewmodel.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -156,6 +155,9 @@ fun App(
             }
         }*/
     ) { paddingValues ->
+
+        val addressViewModel = AddressViewModel()
+
         NavHost(
             navController = navController,
             startDestination = AppNav.Main,
@@ -195,7 +197,8 @@ fun App(
             }
             composable<AppNav.Cart> {
                 CartScreen(
-                    onNavigate = navController::handleNavigation
+                    onNavigate = navController::handleNavigation,
+                    cartViewModel = CartViewModel()
                 )
             }
             composable<AppNav.Buy> {
@@ -205,11 +208,15 @@ fun App(
             }
             composable<AppNav.AddressSelect> {
                 AddressSelectScreen(
-                    onNavigate = navController::handleNavigation
+                    onNavigate = navController::handleNavigation,
+                    addressViewModel = addressViewModel,
                 )
             }
             composable<AppNav.AddressAppend>{
-                AddressAppendScreen()
+                AddressAppendScreen(
+                    onNavigate = navController::handleNavigation,
+                    addressViewModel = addressViewModel,
+                )
             }
             composable<AppNav.Notice>{
                 NoticeScreen(onNavigate = navController::handleNavigation)

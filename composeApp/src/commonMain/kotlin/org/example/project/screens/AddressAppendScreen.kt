@@ -17,15 +17,56 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.project.utill.DisplayAddress
+import org.example.project.utill.NavigationEvent
+import org.example.project.viewmodel.AddressViewModel
 
 @Composable
-fun AddressAppendScreen() {
-    val detailAddressList = listOf(
-        Pair("경기도 성남시 대왕판교로", "18340"),
-        Pair("경기도 평택시 중앙로", "18240"),
-        Pair("경기도 평택시 비전로", "16430"),
-        Pair("경기도 평택시 고덕로", "17560"),
+fun AddressAppendScreen(
+    addressViewModel: AddressViewModel,
+    onNavigate: (NavigationEvent) -> Unit
+) {
+    val addressUiState by addressViewModel.uiState.collectAsState()
+    var addressSelected by remember {
+        mutableStateOf(addressUiState.addressList.firstOrNull())
+    }
+    val addressNameState = rememberTextFieldState()
+    val detailAddressState = rememberTextFieldState()
+    var showError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(addressUiState.addressList) {
+        if (addressSelected == null && addressUiState.addressList.isNotEmpty()) {
+            addressSelected = addressUiState.addressList.first()
+        }
+    }
+
+    val address: List<DisplayAddress> = listOf(
+        DisplayAddress(
+            addressName = "새로운 집",
+            addressRoad = "서울시 동대문구 동대로 107-20",
+            addressZipCode = "123456",
+            addressDetail = "3089동 12호"
+        ),
+        DisplayAddress(
+            addressName = "새로운 집",
+            addressRoad = "서울시 동대문구 동대로 107-20",
+            addressZipCode = "123456",
+            addressDetail = "3089동 12호"
+        ),
+        DisplayAddress(
+            addressName = "새로운 집",
+            addressRoad = "서울시 동대문구 동대로 107-20",
+            addressZipCode = "123456",
+            addressDetail = "3089동 12호"
+        ),
+        DisplayAddress(
+            addressName = "새로운 집",
+            addressRoad = "서울시 동대문구 동대로 107-20",
+            addressZipCode = "123456",
+            addressDetail = "3089동 12호"
+        ),
     )
+
     var showOverlay by remember { mutableStateOf(false) }
 
     Column(
@@ -80,14 +121,17 @@ fun AddressAppendScreen() {
         Column(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
-            detailAddressList.forEach { it ->
+            address.forEach { it ->
                 Spacer(modifier = Modifier.height(22.dp))
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(46.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(
-                            onClick = { showOverlay = true }
+                            onClick = {
+                                showOverlay = true
+                                addressSelected = it
+                            }
                         )
                 ) {
                     Column() {
@@ -107,14 +151,14 @@ fun AddressAppendScreen() {
                     }
                     Column() {
                         Text(
-                            text = it.first,
+                            text = it.addressRoad,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xFF000000),
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = it.second,
+                            text = it.addressZipCode,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xFF000000),
@@ -155,15 +199,41 @@ fun AddressAppendScreen() {
                         .padding(horizontal = 36.dp, vertical = 14.dp)
                 ) {
                     Spacer(modifier = Modifier.height(30.dp))
+                    TextField(
+                        state = addressNameState,
+                        placeholder = {
+                            Text(
+                                text = "배송지 이름을 입력해 주세요.",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xFF666666),
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent
+                        ),
+                        isError = addressNameState.text.isBlank() && showError,
+                        keyboardOptions = KeyboardOptions.Default,
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                        ),
+
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
                     Text(
-                        text = "경기도 평택시 중앙 30로 952가 A동 1004호",
+                        text = addressSelected?.addressRoad!!,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 2,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     TextField(
-                        state = rememberTextFieldState(),
+                        state = detailAddressState,
                         placeholder = {
                             Text(
                                 text = "상세 주소 입력",
@@ -177,10 +247,26 @@ fun AddressAppendScreen() {
                             focusedContainerColor = Color.White,
                         ),
                         keyboardOptions = KeyboardOptions.Default,
+                        isError = detailAddressState.text.isBlank() && showError,
+                        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
                     )
                     Spacer(modifier = Modifier.height(70.dp))
                     OutlinedButton(
                         onClick = {
+                            if(addressNameState.text.isBlank()){
+                                showError = true
+                                return@OutlinedButton
+                            }
+                            addressViewModel.addAddress(
+                                newAddress = DisplayAddress(
+                                    addressName = addressNameState.text.toString(),
+                                    addressRoad = addressSelected?.addressRoad!!,
+                                    addressZipCode = addressSelected?.addressZipCode!!,
+                                    addressDetail = detailAddressState.text.toString()
+                                )
+                            )
+                            showOverlay = false
+                            onNavigate(NavigationEvent.NavigationBack)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
