@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,23 +29,27 @@ fun GoodsListScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        items(goodsUiState.goodsList.size){ index ->
-            val goods = goodsUiState.goodsList[index]
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.48f)
-                    .height(324.dp)
-            ) {
-                GoodsComponent(
-                    goodsImg = goods.imageRes,
-                    goodsName = goods.name,
-                    goodsDescription = goods.description,
-                    goodsPrice = goods.price,
-                    modifier = Modifier.fillMaxSize(),
-                    quantity = goods.quantity,
-                    onNavigate = onNavigate
-                )
+        if(goodsUiState.error == null){
+            items(goodsUiState.goodsList.size) { index ->
+                val goods = goodsUiState.goodsList[index]
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.48f)
+                        .height(324.dp)
+                ) {
+                    GoodsComponent(
+                        goodsImg = goods.imageRes,
+                        goodsName = goods.name,
+                        goodsDescription = goods.description,
+                        goodsPrice = goods.price,
+                        modifier = Modifier.fillMaxSize(),
+                        quantity = goods.quantity,
+                        onNavigate = onNavigate
+                    )
+                }
             }
+        }else{
+            Text("${goodsUiState.error}")
         }
     }
 }

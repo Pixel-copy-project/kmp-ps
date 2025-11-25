@@ -80,7 +80,12 @@ fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
                 }
             }
             goodsList.take(3).forEach {
-                BuyItemComponent()
+                BuyItemComponent(
+                    goodsName = it.name,
+                    goodsPrice = it.price,
+                    description = it.description,
+                    rootModifier = Modifier.padding(top = 12.dp),
+                )
             }
         }
         Spacer(modifier = Modifier.height(30.dp))

@@ -10,6 +10,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,13 +26,18 @@ import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.goods_1
 import org.example.project.formatNumberWithComma
 import org.example.project.utill.DisplayGoodsItem
+import org.example.project.viewmodel.CartViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CartItemComponent(
     rootModifier: Modifier = Modifier,
-    goodsItem: DisplayGoodsItem
+    cartViewModel: CartViewModel,
+    goodsItem: DisplayGoodsItem,
+    removeItem: (DisplayGoodsItem) -> Unit
 ) {
+    var select by remember { mutableStateOf(true) }
+    val uiState by cartViewModel.uiState.collectAsState()
     Box(
         modifier = rootModifier
     ){
@@ -37,11 +47,15 @@ fun CartItemComponent(
             Row() {
                 Spacer(modifier = Modifier.width(6.dp))
                 Checkbox(
-                    checked = false,
+                    checked = select,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .size(48.dp),
-                    onCheckedChange = {},
+                    onCheckedChange = {
+                        select = !select
+                        if(select) cartViewModel.addFinalItem(goodsItem) else cartViewModel.removeFinalItem(goodsItem)
+                        println(uiState.finalOrderList.size)
+                    },
                 )
                 Image(
                     painter = painterResource(Res.drawable.goods_1),
@@ -118,7 +132,9 @@ fun CartItemComponent(
                 .size(30.dp)
                 .align(Alignment.TopEnd)
                 .padding(top = 12.dp, end = 12.dp),
-            onClick = {},
+            onClick = {
+                cartViewModel.removeItem(goodsItem)
+            },
         ){
             Icon(
                 imageVector = Icons.Default.Close,

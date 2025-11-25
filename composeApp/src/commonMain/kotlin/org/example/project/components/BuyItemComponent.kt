@@ -13,11 +13,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.goods_1
+import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.Purple80
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun BuyItemComponent(rootModifier: Modifier = Modifier) {
+fun BuyItemComponent(
+    rootModifier: Modifier = Modifier,
+    goodsName: String,
+    goodsPrice: Int,
+    description: String,
+) {
     Box(
         modifier = rootModifier
     ){
@@ -41,21 +47,21 @@ fun BuyItemComponent(rootModifier: Modifier = Modifier) {
                         .padding(start = 10.dp, top = 12.dp),
                 ) {
                     Text(
-                        text = "상품 이름",
+                        text = goodsName,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color(0xFF666666),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "[예약구매] 11월 9일 일요일 오후 11시까지",
+                        text = description,
                         fontSize = 14.sp,
                         modifier = Modifier.width(204.dp)
                     )
                 }
             }
             Text(
-                text = "18,500원",
+                text = formatNumberWithComma(goodsPrice) + "원",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier

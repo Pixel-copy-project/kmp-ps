@@ -157,6 +157,7 @@ fun App(
     ) { paddingValues ->
 
         val addressViewModel = AddressViewModel()
+        val cartViewModel = CartViewModel()
 
         NavHost(
             navController = navController,
@@ -198,12 +199,13 @@ fun App(
             composable<AppNav.Cart> {
                 CartScreen(
                     onNavigate = navController::handleNavigation,
-                    cartViewModel = CartViewModel()
+                    cartViewModel = cartViewModel
                 )
             }
             composable<AppNav.Buy> {
                 BuyScreen(
-                    onNavigate = navController::handleNavigation
+                    onNavigate = navController::handleNavigation,
+                    addressViewModel = addressViewModel,
                 )
             }
             composable<AppNav.AddressSelect> {

@@ -31,6 +31,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,11 +42,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.ibk
 import kmpproject.composeapp.generated.resources.kb
@@ -54,25 +55,25 @@ import kmpproject.composeapp.generated.resources.shinhan
 import org.example.project.components.BuyItemComponent
 import org.example.project.ui.theme.AppBackground
 import org.example.project.utill.NavigationEvent
+import org.example.project.viewmodel.AddressViewModel
+import org.example.project.viewmodel.CartViewModel
+import org.example.project.viewmodel.CreditCard
+import org.example.project.viewmodel.PaymentMethod
+import org.example.project.viewmodel.PaymentViewModel
 import org.jetbrains.compose.resources.painterResource
-
-enum class CreditCard{
-    KB, NH, SHINHAN, IBK
-}
 
 @Composable
 fun BuyScreen(
-    onNavigate: (NavigationEvent) -> Unit
+    onNavigate: (NavigationEvent) -> Unit,
+    cartViewModel: CartViewModel = viewModel(),
+    paymentViewModel: PaymentViewModel = viewModel(),
+    addressViewModel: AddressViewModel = viewModel(),
 ) {
+    val paymentUiState by paymentViewModel.uiState.collectAsState()
+    val addressUiState by addressViewModel.uiState.collectAsState()
+    val cartUiState by cartViewModel.uiState.collectAsState()
     var isShow: Boolean by remember { mutableStateOf(true) }
-    val paymentMethod: MutableList<Pair<ImageVector, String>> = mutableListOf(
-        Pair(Icons.Default.CreditCard, "신용카드"),
-        Pair(Icons.Default.CreditCard, "카카오페이"),
-        Pair(Icons.Default.CreditCard, "삼성페이"),
-        Pair(Icons.Default.CreditCard, "애플페이"),
-    )
-    var paymentSelected by remember { mutableStateOf(paymentMethod[0]) }
-    var creditCardSelected: CreditCard by remember { mutableStateOf(CreditCard.KB) }
+
     Column(
         modifier = Modifier
             .background(AppBackground)
@@ -94,7 +95,11 @@ fun BuyScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "경기도 성남시 대왕판교로 105-231 A동 1406호",
+                    text = if(addressUiState.selectedAddress != null) {
+                        "${addressUiState.selectedAddress!!.addressRoad} ${addressUiState.selectedAddress!!.addressDetail}"
+                    }else{
+                        "배송 받을 곳이 없어요 추가 해주세요"
+                    },
                     fontSize = 14.sp,
                     color = Color(0xFF666666),
                     modifier = Modifier.padding(start = 20.dp)
@@ -161,8 +166,11 @@ fun BuyScreen(
                 if (isShow) {
                     HorizontalDivider(color = Color(0xFF999999))
                     Spacer(modifier = Modifier.height(16.dp))
-                    repeat(3) {
+                    cartUiState.finalOrderList.forEach {
                         BuyItemComponent(
+                            goodsName = it.name,
+                            goodsPrice = it.price,
+                            description = it.description,
                             rootModifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White),
@@ -194,7 +202,7 @@ fun BuyScreen(
                         modifier = Modifier
                             .clickable(
                                 onClick = {
-                                    paymentSelected = paymentMethod[0]
+                                    paymentViewModel.updatePaymentMethod(PaymentMethod.CREDITCARD)
                                 }
                             ),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -202,8 +210,10 @@ fun BuyScreen(
                     ) {
                         RadioButton(
                             colors = RadioButtonDefaults.colors(Color(0xFF666666)),
-                            onClick = { paymentSelected = paymentMethod[0] },
-                            selected = paymentSelected == paymentMethod[0],
+                            onClick = {
+                                paymentViewModel.updatePaymentMethod(PaymentMethod.CREDITCARD)
+                            },
+                            selected = paymentUiState.paymentMethod == paymentUiState.paymentMethodList[0].second,
                         )
                         Icon(
                             imageVector = Icons.Default.CreditCard,
@@ -216,7 +226,7 @@ fun BuyScreen(
                             color = Color(0xFF666666),
                         )
                     }
-                    if (paymentSelected == paymentMethod[0]) {
+                    if (paymentUiState.paymentMethod == paymentUiState.paymentMethodList[0].second) {
                         Spacer(modifier = Modifier.height(18.dp))
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -227,17 +237,17 @@ fun BuyScreen(
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ){
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .creditCardStyle(
-                                            selectedCreditCard = creditCardSelected,
+                                            selectedCreditCard = paymentUiState.creditCard,
                                             selectCard = CreditCard.KB,
                                             onSelectCard = {
-                                                creditCardSelected = CreditCard.KB
+                                                paymentViewModel.updateCreditCard(CreditCard.KB)
                                             }
                                         )
-                                ){
+                                ) {
                                     Image(
                                         painter = painterResource(Res.drawable.kb),
                                         contentDescription = null,
@@ -249,13 +259,13 @@ fun BuyScreen(
                                 Box(
                                     modifier = Modifier
                                         .creditCardStyle(
-                                            selectedCreditCard = creditCardSelected,
+                                            selectedCreditCard = paymentUiState.creditCard,
                                             selectCard = CreditCard.NH,
                                             onSelectCard = {
-                                                creditCardSelected = CreditCard.NH
+                                                paymentViewModel.updateCreditCard(CreditCard.NH)
                                             }
                                         )
-                                ){
+                                ) {
                                     Image(
                                         painter = painterResource(Res.drawable.nh),
                                         contentDescription = null,
@@ -267,13 +277,13 @@ fun BuyScreen(
                                 Box(
                                     modifier = Modifier
                                         .creditCardStyle(
-                                            selectedCreditCard = creditCardSelected,
+                                            selectedCreditCard = paymentUiState.creditCard,
                                             selectCard = CreditCard.SHINHAN,
                                             onSelectCard = {
-                                                creditCardSelected = CreditCard.SHINHAN
+                                                paymentViewModel.updateCreditCard(CreditCard.SHINHAN)
                                             }
                                         )
-                                ){
+                                ) {
                                     Image(
                                         painter = painterResource(Res.drawable.shinhan),
                                         contentDescription = null,
@@ -285,17 +295,17 @@ fun BuyScreen(
                             }
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ){
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .creditCardStyle(
-                                            selectedCreditCard = creditCardSelected,
+                                            selectedCreditCard = paymentUiState.creditCard,
                                             selectCard = CreditCard.IBK,
                                             onSelectCard = {
-                                                creditCardSelected = CreditCard.IBK
+                                                paymentViewModel.updateCreditCard(CreditCard.IBK)
                                             }
                                         )
-                                ){
+                                ) {
                                     Image(
                                         painter = painterResource(Res.drawable.ibk),
                                         contentDescription = null,
@@ -312,7 +322,7 @@ fun BuyScreen(
                         modifier = Modifier
                             .clickable(
                                 onClick = {
-                                    paymentSelected = paymentMethod[1]
+                                    paymentViewModel.updatePaymentMethod(PaymentMethod.KAKAOPAY)
                                 }
                             ),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -320,8 +330,8 @@ fun BuyScreen(
                     ) {
                         RadioButton(
                             colors = RadioButtonDefaults.colors(Color(0xFF666666)),
-                            onClick = { paymentSelected = paymentMethod[1] },
-                            selected = paymentSelected == paymentMethod[1],
+                            onClick = { paymentViewModel.updatePaymentMethod(PaymentMethod.KAKAOPAY) },
+                            selected = paymentUiState.paymentMethod == paymentUiState.paymentMethodList[1].second,
                         )
                         Icon(
                             imageVector = Icons.Default.CreditCard,
@@ -338,7 +348,7 @@ fun BuyScreen(
                         modifier = Modifier
                             .clickable(
                                 onClick = {
-                                    paymentSelected = paymentMethod[2]
+                                    paymentViewModel.updatePaymentMethod(PaymentMethod.SAMSUMGPAY)
                                 }
                             ),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -346,8 +356,8 @@ fun BuyScreen(
                     ) {
                         RadioButton(
                             colors = RadioButtonDefaults.colors(Color(0xFF666666)),
-                            onClick = { paymentSelected = paymentMethod[2] },
-                            selected = paymentSelected == paymentMethod[2],
+                            onClick = { paymentViewModel.updatePaymentMethod(PaymentMethod.SAMSUMGPAY) },
+                            selected = paymentUiState.paymentMethod == paymentUiState.paymentMethodList[2].second,
                         )
                         Icon(
                             imageVector = Icons.Default.CreditCard,
@@ -364,7 +374,7 @@ fun BuyScreen(
                         modifier = Modifier
                             .clickable(
                                 onClick = {
-                                    paymentSelected = paymentMethod[3]
+                                    paymentViewModel.updatePaymentMethod(PaymentMethod.APPLEPAY)
                                 }
                             ),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -372,8 +382,8 @@ fun BuyScreen(
                     ) {
                         RadioButton(
                             colors = RadioButtonDefaults.colors(Color(0xFF666666)),
-                            onClick = { paymentSelected = paymentMethod[3] },
-                            selected = paymentSelected == paymentMethod[3],
+                            onClick = { paymentViewModel.updatePaymentMethod(PaymentMethod.APPLEPAY) },
+                            selected = paymentUiState.paymentMethod == paymentUiState.paymentMethodList[3].second,
                         )
                         Icon(
                             imageVector = Icons.Default.CreditCard,
@@ -419,7 +429,8 @@ fun BuyScreen(
 fun Modifier.creditCardStyle(
     selectedCreditCard: CreditCard,
     selectCard: CreditCard,
-    onSelectCard:() -> Unit): Modifier{
+    onSelectCard: () -> Unit
+): Modifier {
     return Modifier
         .width(112.dp)
         .height(62.dp)
@@ -437,13 +448,13 @@ fun Modifier.creditCardStyle(
         )
         .background(color = Color(0xFFF1F1F1))
         .then(
-            other = if(selectedCreditCard == selectCard){
+            other = if (selectedCreditCard == selectCard) {
                 Modifier.border(
                     width = 2.dp,
                     color = Color(0xFF555555),
                     shape = RoundedCornerShape(4.dp)
                 )
-            }else{
+            } else {
                 Modifier
             }
         )

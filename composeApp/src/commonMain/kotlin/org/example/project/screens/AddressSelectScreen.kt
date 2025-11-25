@@ -143,15 +143,15 @@ fun AddressSelectScreen(
                             Row(
                                 modifier = Modifier
                                     .clickable(onClick = {
-                                        addressSelected = it
+                                        addressViewModel.selectAddress(it)
                                     }),
                                 horizontalArrangement = Arrangement.spacedBy(22.dp),
                             ) {
                                 RadioButton(
                                     onClick = {
-                                        addressSelected = it
+                                        addressViewModel.selectAddress(it)
                                     },
-                                    selected = addressSelected === it,
+                                    selected = addressUiState.selectedAddress === it,
                                     colors = RadioButtonDefaults.colors(Color.Black),
                                     modifier = Modifier
                                         .weight(0.1f)

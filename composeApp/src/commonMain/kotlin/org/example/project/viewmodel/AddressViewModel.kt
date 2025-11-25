@@ -48,6 +48,10 @@ class AddressViewModel(
             )
         }
     }
+
+    fun selectAddress(address: DisplayAddress){
+        _uiState.update { it.copy(selectedAddress = address) }
+    }
 }
 
 fun Address.toDisplay(): DisplayAddress {

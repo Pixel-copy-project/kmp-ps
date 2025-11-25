@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.components.CartItemComponent
+import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.AppBackground
-import org.example.project.utill.DisplayGoodsItem
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.CartViewModel
 
@@ -31,8 +31,8 @@ fun CartScreen(
 ){
     val cartUiState by cartViewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
-    val finalOrderList: List<DisplayGoodsItem> by remember { mutableStateOf(cartUiState.cart) }
     var allSelect: Boolean by remember { mutableStateOf(false) }
+
 
     Box() {
         if(cartUiState.isLoading){
@@ -73,7 +73,9 @@ fun CartScreen(
                             rootModifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White),
-                            goodsItem = it
+                            goodsItem = it,
+                            cartViewModel = cartViewModel,
+                            removeItem = { cartViewModel.removeItem(it) }
                         )
                     }
                 }
@@ -100,19 +102,19 @@ fun CartScreen(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            repeat(3) {
+                            cartUiState.finalOrderList.forEach {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Text(
-                                        text = "상품명",
+                                        text = it.name,
                                         fontSize = 18.sp,
                                         color = Color(0xFF333333),
                                     )
                                     Text(
-                                        text = "18,500원",
+                                        text = formatNumberWithComma(it.price) + "원",
                                         fontSize = 20.sp,
                                         color = Color(0xFF999999),
                                     )
@@ -123,7 +125,7 @@ fun CartScreen(
                         HorizontalDivider(color = Color.Black)
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "55,500원",
+                            text = formatNumberWithComma(cartUiState.totalPrice) + "원",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.align(Alignment.End),
@@ -142,7 +144,7 @@ fun CartScreen(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = "55,000원 구매하기",
+                        text = formatNumberWithComma(cartUiState.totalPrice) + "원 구매하기",
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -150,7 +152,7 @@ fun CartScreen(
                 }
             }
         }
-        if((scrollState.value / scrollState.maxValue) < 0.8f){
+        /*if((scrollState.value / scrollState.maxValue) < 0.8f){
             TextButton(
                 onClick = { onNavigate(NavigationEvent.NavigateToBuy) },
                 shape = RoundedCornerShape(
@@ -164,12 +166,12 @@ fun CartScreen(
                     .align(Alignment.BottomCenter)
             ) {
                 Text(
-                    text = "55,000원 구매하기",
+                    text = formatNumberWithComma(cartUiState.totalPrice) + "원 구매하기",
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                 )
             }
-        }
+        }*/
     }
 }
