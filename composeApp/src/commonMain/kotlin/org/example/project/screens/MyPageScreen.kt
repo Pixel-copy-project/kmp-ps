@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import org.example.project.components.BuyItemComponent
 import org.example.project.components.GoodsReviewComponent
 import org.example.project.components.PostTitleComponent
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.utill.QuestionList
 import org.example.project.utill.goodsList
@@ -36,7 +36,7 @@ fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .background(AppBackground)
+            .background(AppBackground0)
             .padding(horizontal = 12.dp)
     ){
         Spacer(modifier = Modifier.height(30.dp))

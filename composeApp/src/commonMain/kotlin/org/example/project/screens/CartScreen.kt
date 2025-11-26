@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.components.CartItemComponent
 import org.example.project.formatNumberWithComma
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.CartViewModel
 
@@ -40,7 +40,7 @@ fun CartScreen(
         } else {
             Column(
                 modifier = Modifier
-                    .background(AppBackground)
+                    .background(AppBackground0)
                     .verticalScroll(scrollState)
             ) {
                 Row(

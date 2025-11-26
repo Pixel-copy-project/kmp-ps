@@ -15,6 +15,10 @@ sealed class AppNav {
     @Serializable
     object XSignUp
     @Serializable
+    object Splash
+    @Serializable
+    object ContentRoot
+    @Serializable
     object Main
 
     @Serializable
@@ -82,6 +86,8 @@ sealed interface NavigationEvent {
     data object KakaoSignUp : NavigationEvent
     data object GoogleSignUp : NavigationEvent
     data object XSignUp : NavigationEvent
+    data object NavigateToSplash: NavigationEvent
+    data object NavigateToContentRoot: NavigationEvent
     data object NavigateToMain : NavigationEvent
     data object NavigateToGoodsList : NavigationEvent
     data class NavigateToGoodsDetail(
@@ -125,6 +131,8 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
         NavigationEvent.KakaoSignUp -> navigate(AppNav.KakaoSignUp)
         NavigationEvent.GoogleSignUp -> navigate(AppNav.GoogleSignUp)
         NavigationEvent.XSignUp -> navigate(AppNav.XSignUp)
+        NavigationEvent.NavigateToSplash -> navigate(AppNav.Splash)
+        NavigationEvent.NavigateToContentRoot -> navigate(AppNav.ContentRoot)
         NavigationEvent.NavigateToMain -> navigate(AppNav.Main)
         NavigationEvent.NavigateToGoodsList -> navigate(AppNav.GoodsList)
         is NavigationEvent.NavigateToGoodsDetail -> navigate(

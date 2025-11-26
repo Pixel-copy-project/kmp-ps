@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 
 @Composable
 fun FAQComponent(
@@ -33,7 +33,7 @@ fun FAQComponent(
 
     Column(
         modifier = Modifier
-            .background(AppBackground)
+            .background(AppBackground0)
             .clickable(
                 onClick = { isOpenAnswer = !isOpenAnswer }
             ),

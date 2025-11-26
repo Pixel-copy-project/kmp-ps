@@ -12,7 +12,8 @@ val Pink40 = Color(0xFF7D5260)
 
 val Grey40 = Color(0xFFE9E9E9)
 
-val AppBackground = Color(0xFFE9E9E9)
+val AppBackground0 = Color(0xFFE9E9E9)
+val AppBackground1 = Color(0xFFFCFCFC)
 
 val NoticeCategory = Color(0xFF888888)
 val NoticeTitle = Color(0xFF333333)

@@ -4,7 +4,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
 import androidx.navigation.bindToBrowserNavigation
-import com.example.project.App
 import kotlinx.browser.document
 
 @OptIn(

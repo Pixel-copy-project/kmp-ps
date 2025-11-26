@@ -53,7 +53,7 @@ import kmpproject.composeapp.generated.resources.kb
 import kmpproject.composeapp.generated.resources.nh
 import kmpproject.composeapp.generated.resources.shinhan
 import org.example.project.components.BuyItemComponent
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.AddressViewModel
 import org.example.project.viewmodel.CartViewModel
@@ -76,7 +76,7 @@ fun BuyScreen(
 
     Column(
         modifier = Modifier
-            .background(AppBackground)
+            .background(AppBackground0)
             .verticalScroll(rememberScrollState())
     ) {
         Box(

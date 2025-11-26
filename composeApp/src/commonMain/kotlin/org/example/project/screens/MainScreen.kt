@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -43,7 +42,7 @@ import kmpproject.composeapp.generated.resources.katalk
 import kmpproject.composeapp.generated.resources.main_banner_1
 import org.example.project.components.GoodsComponent
 import org.example.project.components.PostTitleComponent
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.ui.theme.SectionBackground
 import org.example.project.utill.NavigationEvent
 import org.example.project.utill.NoticeList
@@ -61,7 +60,7 @@ fun MainScreen(
 
     Column(
         modifier = Modifier
-            .background(AppBackground)
+            .background(AppBackground0)
             .verticalScroll(state = scrollState)
     ) {
         /* Banner */

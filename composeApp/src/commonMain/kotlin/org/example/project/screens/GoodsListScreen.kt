@@ -49,7 +49,9 @@ fun GoodsListScreen(
                 }
             }
         }else{
-            Text("${goodsUiState.error}")
+            item{
+                Text("${goodsUiState.error}")
+            }
         }
     }
 }

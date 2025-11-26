@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.components.PostTitleComponent
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.utill.NoticeList
 
@@ -28,7 +28,7 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(AppBackground)
+                .background(AppBackground0)
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ){
             Column {

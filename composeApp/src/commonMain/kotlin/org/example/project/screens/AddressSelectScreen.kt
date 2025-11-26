@@ -41,8 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.example.project.ui.theme.AppBackground
+import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.AddressViewModel
 
@@ -69,7 +68,7 @@ fun AddressSelectScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .background(AppBackground)
+                .background(AppBackground0)
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.height(200.dp))

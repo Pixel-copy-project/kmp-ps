@@ -121,7 +121,7 @@ fun AddressAppendScreen(
         Column(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
-            address.forEach { it ->
+            address.forEach {
                 Spacer(modifier = Modifier.height(22.dp))
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(46.dp),
