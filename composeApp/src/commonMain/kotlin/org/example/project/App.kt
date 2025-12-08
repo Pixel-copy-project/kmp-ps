@@ -13,7 +13,7 @@ import org.example.project.utill.AppNav
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
-    onNavHostReady: suspend (NavController) -> Unit = {}
+
 ) {
     val navController = rememberNavController()
 
@@ -32,7 +32,6 @@ fun App(
         }
         composable<AppNav.ContentRoot>{
             ContentRoot(
-                onNavHostReady = onNavHostReady
             )
         }
     }

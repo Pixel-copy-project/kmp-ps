@@ -71,7 +71,6 @@ fun BuyScreen(
 ) {
     val paymentUiState by paymentViewModel.uiState.collectAsState()
     val addressUiState by addressViewModel.uiState.collectAsState()
-    val cartUiState by cartViewModel.uiState.collectAsState()
     var isShow: Boolean by remember { mutableStateOf(true) }
 
     Column(
@@ -95,9 +94,9 @@ fun BuyScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = if(addressUiState.selectedAddress != null) {
+                    text = if (addressUiState.selectedAddress != null) {
                         "${addressUiState.selectedAddress!!.addressRoad} ${addressUiState.selectedAddress!!.addressDetail}"
-                    }else{
+                    } else {
                         "배송 받을 곳이 없어요 추가 해주세요"
                     },
                     fontSize = 14.sp,
@@ -166,16 +165,15 @@ fun BuyScreen(
                 if (isShow) {
                     HorizontalDivider(color = Color(0xFF999999))
                     Spacer(modifier = Modifier.height(16.dp))
-                    cartUiState.finalOrderList.forEach {
-                        BuyItemComponent(
-                            goodsName = it.name,
-                            goodsPrice = it.price,
-                            description = it.description,
-                            rootModifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White),
-                        )
-                    }
+                    BuyItemComponent(
+                        goodsName = "it.name",
+                        goodsPrice = 20000,
+                        description = "it.description",
+                        rootModifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White),
+                    )
+
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }

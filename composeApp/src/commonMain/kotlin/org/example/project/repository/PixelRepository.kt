@@ -9,13 +9,20 @@ import org.example.project.utill.GoodsItem
 import org.example.project.utill.Notice
 import org.example.project.utill.QaTag
 import org.example.project.utill.Question
-import io.ktor.client.*
-import io.ktor.client.request.get
 import org.example.project.utill.Address
 
 class PixelRepository:
     GoodsRepository, NoticeRepository, QuestionRepository, CartRepository, AddressRepository
 {
+    /*val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            })
+        }
+    }*/
+
     private val goodsList = listOf<GoodsItem>(
         GoodsItem(
             id = 1,

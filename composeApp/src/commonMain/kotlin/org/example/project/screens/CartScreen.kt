@@ -1,5 +1,6 @@
 package org.example.project.screens
 
+import androidx.collection.emptyLongSet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,9 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kmpproject.composeapp.generated.resources.Res
+import kmpproject.composeapp.generated.resources.good_4
 import org.example.project.components.CartItemComponent
 import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.AppBackground0
+import org.example.project.utill.DisplayCartItem
+import org.example.project.utill.DisplayGoodsItem
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.CartViewModel
 
@@ -29,15 +34,20 @@ fun CartScreen(
     onNavigate: (NavigationEvent) -> Unit,
     cartViewModel: CartViewModel
 ){
-    val cartUiState by cartViewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
-    var allSelect: Boolean by remember { mutableStateOf(false) }
+    val uiState by cartViewModel.uiState.collectAsState()
 
-
-    Box() {
-        if(cartUiState.isLoading){
-            Text("Loading....")
-        } else {
+    if(uiState.items.isEmpty()){
+        Box(){
+            Text(
+                text = "장바구니에 품목을 추가해주세요",
+                fontSize = 24.sp,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+    else {
+        Box() {
             Column(
                 modifier = Modifier
                     .background(AppBackground0)
@@ -48,12 +58,11 @@ fun CartScreen(
                 ) {
                     Spacer(modifier = Modifier.width(18.dp))
                     Checkbox(
-                        checked = allSelect,
+                        checked = uiState.items.isNotEmpty() &&
+                                uiState.items.all { it.isChecked },
+                        onCheckedChange = { cartViewModel.toggleAllItems() },
                         modifier = Modifier
                             .size(48.dp),
-                        onCheckedChange = {
-                            allSelect = !allSelect
-                        }
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
@@ -68,14 +77,15 @@ fun CartScreen(
                         .padding(12.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    cartUiState.cart.forEach {
+                    uiState.items.forEach {
                         CartItemComponent(
                             rootModifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White),
                             goodsItem = it,
-                            cartViewModel = cartViewModel,
-                            removeItem = { cartViewModel.removeItem(it) }
+                            onCheckedChange = {cartViewModel.toggleItemCheck(it.name)},
+                            onQuantityChange = { q -> cartViewModel.updateQuantity(it.name, q)},
+                            onRemove = { cartViewModel.removeItem(it.name) }
                         )
                     }
                 }
@@ -102,7 +112,7 @@ fun CartScreen(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            cartUiState.finalOrderList.forEach {
+                            uiState.items.filter{ it.isChecked }.forEach {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -114,7 +124,7 @@ fun CartScreen(
                                         color = Color(0xFF333333),
                                     )
                                     Text(
-                                        text = formatNumberWithComma(it.price) + "원",
+                                        text = formatNumberWithComma(it.price * it.quantity) + "원",
                                         fontSize = 20.sp,
                                         color = Color(0xFF999999),
                                     )
@@ -125,7 +135,7 @@ fun CartScreen(
                         HorizontalDivider(color = Color.Black)
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = formatNumberWithComma(cartUiState.totalPrice) + "원",
+                            text = formatNumberWithComma(uiState.totalPrice) + "원",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.align(Alignment.End),
@@ -144,34 +154,37 @@ fun CartScreen(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = formatNumberWithComma(cartUiState.totalPrice) + "원 구매하기",
+                        text = formatNumberWithComma(uiState.totalPrice) + "원 주문하기",
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )
                 }
             }
-        }
-        /*if((scrollState.value / scrollState.maxValue) < 0.8f){
-            TextButton(
-                onClick = { onNavigate(NavigationEvent.NavigateToBuy) },
-                shape = RoundedCornerShape(
-                    topStart = 8.dp, topEnd = 8.dp,
-                    bottomStart = 0.dp, bottomEnd = 0.dp
-                ),
-                colors = ButtonDefaults.buttonColors(Color.Black),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
-                Text(
-                    text = formatNumberWithComma(cartUiState.totalPrice) + "원 구매하기",
-                    color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                )
+
+
+            if(scrollState.maxValue > 0 &&
+                (scrollState.value.toFloat() / scrollState.maxValue) < 0.8f) {
+                TextButton(
+                    onClick = { onNavigate(NavigationEvent.NavigateToBuy) },
+                    shape = RoundedCornerShape(
+                        topStart = 8.dp, topEnd = 8.dp,
+                        bottomStart = 0.dp, bottomEnd = 0.dp
+                    ),
+                    colors = ButtonDefaults.buttonColors(Color.Black),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Text(
+                        text = formatNumberWithComma(uiState.totalPrice) + "원 주문하기",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
-        }*/
+        }
     }
 }

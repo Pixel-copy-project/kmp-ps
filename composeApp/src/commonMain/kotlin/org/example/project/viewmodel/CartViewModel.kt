@@ -9,78 +9,103 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.project.ioDispatcher
 import org.example.project.repository.PixelRepository
+import org.example.project.utill.DisplayCartItem
 import org.example.project.utill.DisplayGoodsItem
 
 class CartViewModel(
     private val repository: PixelRepository = PixelRepository()
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(CartUiState(isLoading = true))
+    private val _uiState = MutableStateFlow(CartUiState())
     val uiState: StateFlow<CartUiState> = _uiState.asStateFlow()
 
-    init{
-        loadCart()
+    init {
+        loadCartItems()
     }
 
-    private fun loadCart(){
-        viewModelScope.launch(ioDispatcher) {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            try{
-                val cart = repository.getCart()
-                val displayGoods = cart.map { it.toDisplay() }.toMutableList()
+    private fun loadCartItems() {
+        val sampleItems = listOf(
+            DisplayCartItem("무선 이어폰", 89000, 1, description = "11ffwqg", true),
+            DisplayCartItem("노트북 거치대", 35000, 2, description = "11ffwqg", true),
+            DisplayCartItem("USB-C 케이블", 12000, 3,  description = "11ffwqg",true)
+        )
+        _uiState.update {
+            it.copy(items = sampleItems)
+        }
+        calculateTotals()
+    }
 
-                _uiState.update{
-                    it.copy(
-                        cart = displayGoods,
-                        finalOrderList = displayGoods.toMutableList(),
-                        totalPrice = displayGoods.sumOf { item -> item.price },
-                        isLoading = false,
-                        error = null,
-                    )
+    fun toggleItemCheck(itemName: String) {
+        _uiState.update { state ->
+            state.copy(
+                items = state.items.map { item ->
+                    if (item.name == itemName) {
+                        item.copy(isChecked = !item.isChecked)
+                    } else {
+                        item
+                    }
                 }
-            }catch(e: Exception){
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
-            }
-        }
-    }
-    fun addItem(item: DisplayGoodsItem){
-        _uiState.update{
-            it.copy(
-                cart = it.cart.apply { add(item) },
-                finalOrderList = it.finalOrderList.apply { add(item) }
             )
         }
+        calculateTotals()
     }
 
-    fun removeItem(item: DisplayGoodsItem){
-        _uiState.update{
-            it.copy(
-                cart = it.cart.apply { remove(item) },
-                finalOrderList = it.finalOrderList.apply { remove(item) }
+    fun toggleAllItems() {
+        val allChecked = _uiState.value.items.all { it.isChecked }
+        _uiState.update { state ->
+            state.copy(
+                items = state.items.map { it.copy(isChecked = !allChecked) }
             )
         }
-    }
-    fun addFinalItem(item: DisplayGoodsItem){
-        _uiState.update{
-            val cart = it.finalOrderList
-            cart.add(item)
-            it.copy(
-                finalOrderList = cart,
-                totalPrice = cart.sumOf { item -> item.price }
-            )
-        }
+        calculateTotals()
     }
 
-    fun removeFinalItem(item: DisplayGoodsItem){
-        _uiState.update{
-            val cart = it.finalOrderList
-            cart.remove(item)
-            it.copy(
-                finalOrderList = cart,
-                totalPrice = cart.sumOf { item -> item.price }
+    fun updateQuantity(itemName: String, newQuantity: Int) {
+        if (newQuantity <= 0) return
+
+        _uiState.update { state ->
+            state.copy(
+                items = state.items.map { item ->
+                    if (item.name == itemName) {
+                        item.copy(quantity = newQuantity)
+                    } else {
+                        item
+                    }
+                }
             )
         }
+        calculateTotals()
     }
 
-    fun getByName(name: String){
+    fun removeItem(itemName: String) {
+        _uiState.update { state ->
+            state.copy(
+                items = state.items.filter { it.name != itemName }
+            )
+        }
+        calculateTotals()
+    }
+
+    fun removeCheckedItems() {
+        _uiState.update { state ->
+            state.copy(
+                items = state.items.filter { !it.isChecked }
+            )
+        }
+        calculateTotals()
+    }
+
+    fun updateFinalOrderList(){
+
+    }
+
+    private fun calculateTotals() {
+        _uiState.update { state ->
+            val checkedItems = state.items.filter { it.isChecked }
+            val total = checkedItems.sumOf { it.price * it.quantity }
+            state.copy(
+                totalPrice = total,
+                checkedItemsCount = checkedItems.size
+            )
+        }
     }
 }

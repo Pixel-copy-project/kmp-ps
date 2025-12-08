@@ -44,6 +44,21 @@ data class DisplayGoodsItem(
     val quantity: Int
 )
 
+data class CartItem(
+    val name: String,
+    val price: Int,
+    val description: String,
+    val quantity: Int,
+)
+
+data class DisplayCartItem(
+    val name: String,
+    val price: Int,
+    val quantity: Int,
+    val description: String,
+    val isChecked: Boolean = true
+)
+
 data class Notice(
     val title: String,
     val writer: String,

@@ -52,9 +52,7 @@ import org.example.project.viewmodel.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentRoot(
-    onNavHostReady: suspend (NavController) -> Unit = {}
-){
+fun ContentRoot(){
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val showButton by remember {
@@ -283,9 +281,6 @@ fun ContentRoot(
                     onNavigate = navController::handleNavigation,
                 )
             }
-        }
-        LaunchedEffect(navController) {
-            onNavHostReady(navController)
         }
         Row {
             AnimatedVisibility(
