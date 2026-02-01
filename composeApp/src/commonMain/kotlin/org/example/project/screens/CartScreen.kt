@@ -1,6 +1,5 @@
 package org.example.project.screens
 
-import androidx.collection.emptyLongSet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,22 +9,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kmpproject.composeapp.generated.resources.Res
-import kmpproject.composeapp.generated.resources.good_4
 import org.example.project.components.CartItemComponent
 import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.AppBackground0
-import org.example.project.utill.DisplayCartItem
-import org.example.project.utill.DisplayGoodsItem
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.CartViewModel
 

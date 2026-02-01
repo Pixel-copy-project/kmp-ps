@@ -38,13 +38,13 @@ fun GoodsListScreen(
                         .height(324.dp)
                 ) {
                     GoodsComponent(
-                        goodsImg = goods.imageRes,
                         goodsName = goods.name,
                         goodsDescription = goods.description,
                         goodsPrice = goods.price,
                         modifier = Modifier.fillMaxSize(),
                         quantity = goods.quantity,
-                        onNavigate = onNavigate
+                        onNavigate = onNavigate,
+                        imageName = goods.imageName
                     )
                 }
             }

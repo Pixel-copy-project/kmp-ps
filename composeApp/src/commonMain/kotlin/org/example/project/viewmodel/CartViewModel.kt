@@ -2,26 +2,42 @@ package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.example.project.ioDispatcher
+import kotlinx.serialization.json.Json
 import org.example.project.repository.PixelRepository
 import org.example.project.utill.DisplayCartItem
-import org.example.project.utill.DisplayGoodsItem
 
-class CartViewModel(
-    private val repository: PixelRepository = PixelRepository()
-): ViewModel() {
+class CartViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(CartUiState())
     val uiState: StateFlow<CartUiState> = _uiState.asStateFlow()
+    private val repository = PixelRepository(
+        HttpClient{
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                })
+            }
+        }
+    )
 
     init {
         loadCartItems()
     }
 
+    private fun loadData(){
+        viewModelScope.launch {
+
+        }
+    }
     private fun loadCartItems() {
         val sampleItems = listOf(
             DisplayCartItem("무선 이어폰", 89000, 1, description = "11ffwqg", true),

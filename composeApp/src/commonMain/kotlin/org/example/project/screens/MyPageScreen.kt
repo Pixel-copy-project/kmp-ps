@@ -29,7 +29,6 @@ import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
 import org.example.project.utill.QuestionList
-import org.example.project.utill.goodsList
 
 @Composable
 fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
@@ -79,14 +78,14 @@ fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
                     )
                 }
             }
-            goodsList.take(3).forEach {
+            /*goodsList.take(3).forEach {
                 BuyItemComponent(
                     goodsName = it.name,
                     goodsPrice = it.price,
                     description = it.description,
                     rootModifier = Modifier.padding(top = 12.dp),
                 )
-            }
+            }*/
         }
         Spacer(modifier = Modifier.height(30.dp))
         Box(

@@ -1,9 +1,9 @@
 package org.example.project.viewmodel
 
-import org.example.project.utill.DisplayGoodsItem
+import org.example.project.utill.ProductUI
 
 data class GoodsUiState(
-    val goodsList: List<DisplayGoodsItem> = emptyList(),
+    val goodsList: List<ProductUI> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
 )

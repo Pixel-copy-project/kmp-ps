@@ -212,6 +212,7 @@ fun ContentRoot(){
                     goodsDescription = goodsDetail.goodsDescription,
                     goodsPrice = goodsDetail.goodsPrice,
                     quantity = goodsDetail.quantity,
+                    imageName = goodsDetail.imageName,
                 )
             }
             composable<AppNav.Cart> {

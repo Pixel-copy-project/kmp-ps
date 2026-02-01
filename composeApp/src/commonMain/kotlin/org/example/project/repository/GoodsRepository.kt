@@ -1,9 +1,8 @@
 package org.example.project.repository
 
-import org.example.project.utill.GoodsItem
+import org.example.project.utill.Product
 
 interface GoodsRepository {
-    suspend fun getGoodsList(): List<GoodsItem>
-    suspend fun getGoodsById(id: Int): GoodsItem?
-    suspend fun getGoodsByName(name: String): GoodsItem?
+    suspend fun getProducts(): List<Product>
+    suspend fun getProductByName(name: String): Product?
 }

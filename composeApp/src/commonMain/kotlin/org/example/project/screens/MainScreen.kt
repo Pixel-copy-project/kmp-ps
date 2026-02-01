@@ -192,12 +192,12 @@ fun MainScreen(
                         GoodsComponent(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            goodsImg = it.imageRes,
                             goodsName = it.name,
                             goodsDescription = it.description,
                             goodsPrice = it.price,
                             quantity = it.quantity,
-                            onNavigate = onNavigate
+                            onNavigate = onNavigate,
+                            imageName = it.imageName,
                         )
                     }
                 }

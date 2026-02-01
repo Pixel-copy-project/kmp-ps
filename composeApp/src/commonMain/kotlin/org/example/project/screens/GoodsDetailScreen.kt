@@ -28,6 +28,7 @@ import kmpproject.composeapp.generated.resources.good_4
 import kmpproject.composeapp.generated.resources.package_notice
 import kmpproject.composeapp.generated.resources.sold_out
 import org.example.project.formatNumberWithComma
+import org.example.project.utill.DrawableMapper
 import org.example.project.utill.NavigationEvent
 import org.jetbrains.compose.resources.painterResource
 
@@ -38,6 +39,7 @@ fun GoodsDetailScreen(
     goodsDescription: String,
     goodsPrice: Int,
     quantity: Int,
+    imageName: String,
     ) {
     Column(
         modifier = Modifier
@@ -54,7 +56,7 @@ fun GoodsDetailScreen(
                     .height(388.dp)
             ){
                 Image(
-                    painter = painterResource(Res.drawable.good_4),
+                    painter = painterResource(DrawableMapper.getDrawable(imageName)),
                     contentDescription = "goods image",
                     modifier = Modifier.fillMaxSize()
                 )

@@ -1,86 +1,76 @@
 package org.example.project.repository
 
-import kmpproject.composeapp.generated.resources.Res
-import kmpproject.composeapp.generated.resources.good_4
-import kmpproject.composeapp.generated.resources.goods_1
-import kmpproject.composeapp.generated.resources.goods_2
-import kmpproject.composeapp.generated.resources.goods_3
-import org.example.project.utill.GoodsItem
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import org.example.project.utill.Product
 import org.example.project.utill.Notice
 import org.example.project.utill.QaTag
 import org.example.project.utill.Question
 import org.example.project.utill.Address
 
-class PixelRepository:
+class PixelRepository(private val client: HttpClient):
     GoodsRepository, NoticeRepository, QuestionRepository, CartRepository, AddressRepository
 {
-    /*val client = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-        }
-    }*/
-
-    private val goodsList = listOf<GoodsItem>(
-        GoodsItem(
-            id = 1,
+    private val goodsList = listOf<Product>(
+        Product(
+            id = "1",
             name = "상품 1",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 17000,
-            imageRes = Res.drawable.goods_1,
             quantity = 100,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 2,
+        Product(
+            id = "2",
             name = "상품 2",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 40000,
-            imageRes = Res.drawable.goods_2,
             quantity = 100,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 3,
+        Product(
+            id = "3",
             name = "상품 3",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 14000,
-            imageRes = Res.drawable.goods_3,
             quantity = 100,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 4,
+        Product(
+            id = "4",
             name = "상품 2",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 18500,
-            imageRes = Res.drawable.good_4,
             quantity = 0,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 4,
+        Product(
+            id = "5",
             name = "상품 2",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 18500,
-            imageRes = Res.drawable.good_4,
             quantity = 100,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 4,
+        Product(
+            id = "6",
             name = "상품 2",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 18500,
-            imageRes = Res.drawable.good_4,
             quantity = 0,
+            imgName = ""
         ),
-        GoodsItem(
-            id = 4,
+        Product(
+            id = "7",
             name = "상품 2",
             description = "[예약구매] 11월 9일 일요일 오후 11시까지",
             price = 18500,
-            imageRes = Res.drawable.good_4,
             quantity = 100,
+            imgName = ""
         ),
     )
+
     private val noticeList = listOf<Notice>(
         Notice(
             title = "아구이뽀 맥주컵 굿즈",
@@ -311,7 +301,7 @@ class PixelRepository:
         ),
     )
 
-    var cart: List<GoodsItem> = listOf(
+    var cart: List<Product> = listOf(
         goodsList[0], goodsList[1]
     )
 
@@ -336,16 +326,12 @@ class PixelRepository:
         ),
     )
 
-    override suspend fun getGoodsList(): List<GoodsItem>{
-        return goodsList
+    override suspend fun getProducts(): List<Product>{
+        return client.get("http://10.0.2.2:8080/products").body()
     }
 
-    override suspend fun getGoodsById(id: Int): GoodsItem? {
-        return goodsList.find { it.id == id }
-    }
-
-    override suspend fun getGoodsByName(name: String): GoodsItem? {
-        return goodsList.find { it.name == name }
+    override suspend fun getProductByName(name: String): Product? {
+        return client.get("http://10.0.2.2:8080/products/byName/$name").body()
     }
 
     override suspend fun getNoticeList(): List<Notice> {
@@ -364,7 +350,7 @@ class PixelRepository:
         return questionList.find { it.title == title }
     }
 
-    override suspend fun getCart(): List<GoodsItem> {
+    override suspend fun getCart(): List<Product> {
         return cart
     }
 

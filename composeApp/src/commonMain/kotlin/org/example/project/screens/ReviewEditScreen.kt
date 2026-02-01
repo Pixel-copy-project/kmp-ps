@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.good_4
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.goodsList
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -89,7 +88,7 @@ fun ReviewEditScreen(
                     expanded = dropdownExpanded,
                     onDismissRequest = { dropdownExpanded = false },
                 ) {
-                    goodsList.forEach {
+                    /*goodsList.forEach {
                         DropdownMenuItem(
                             text = { Text(text = it.name) },
                             onClick = {
@@ -97,7 +96,7 @@ fun ReviewEditScreen(
                                 dropdownExpanded = false
                             }
                         )
-                    }
+                    }*/
                 }
             }
         }

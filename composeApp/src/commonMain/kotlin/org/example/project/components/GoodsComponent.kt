@@ -21,6 +21,7 @@ import org.example.project.formatNumberWithComma
 import org.example.project.ui.theme.GoodsDescription
 import org.example.project.ui.theme.GoodsName
 import org.example.project.ui.theme.GoodsPrice
+import org.example.project.utill.DrawableMapper
 import org.example.project.utill.NavigationEvent
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -28,11 +29,11 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun GoodsComponent(
     modifier: Modifier,
-    goodsImg: DrawableResource,
     goodsName: String,
     goodsDescription: String,
     goodsPrice: Int,
     quantity: Int,
+    imageName: String,
     onNavigate: (NavigationEvent) -> Unit
 ) {
     Column (
@@ -43,6 +44,7 @@ fun GoodsComponent(
                     goodsDescription = goodsDescription,
                     goodsPrice = goodsPrice,
                     quantity = quantity,
+                    imageName = imageName,
                     )
                 )
             }
@@ -54,7 +56,7 @@ fun GoodsComponent(
                 .height(188.dp)
         ){
             Image(
-                painter = painterResource(goodsImg),
+                painter = painterResource(DrawableMapper.getDrawable(imageName)),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

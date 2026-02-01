@@ -30,6 +30,7 @@ sealed class AppNav {
         val goodsDescription: String,
         val goodsPrice: Int,
         val quantity: Int,
+        val imageName: String,
     )
 
     @Serializable
@@ -95,6 +96,7 @@ sealed interface NavigationEvent {
         val goodsDescription: String,
         val goodsPrice: Int,
         val quantity: Int,
+        val imageName: String,
     ) : NavigationEvent
 
     data object NavigateToCart : NavigationEvent
@@ -141,6 +143,7 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
                 event.goodsDescription,
                 event.goodsPrice,
                 event.quantity,
+                event.imageName,
             )
         )
         NavigationEvent.NavigateToCart -> navigate(AppNav.Cart)
