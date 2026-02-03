@@ -32,16 +32,16 @@ import org.example.project.utill.NavigationEvent
 @Composable
 fun PostScreen(
     title: String,
-    postCategory: String,
-    tag: String,
-    writer: String,
+    category: String?,
+    tag: String?,
+    author: String,
     content: String,
     createdAt: String,
     onNavigate: (NavigationEvent) -> Unit,
 ){
     var categoryText by remember {
-        mutableStateOf<String>(value = when(postCategory){
-            "Notice" -> "카테고리"
+        mutableStateOf<String>(value = when(category){
+            "공지사항" -> "카테고리"
             else -> "문의상품"
         })
     }
@@ -80,7 +80,7 @@ fun PostScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         Text(
-                            text = tag,
+                            text = tag ?: "",
                             color = Color(0xFF333333),
                             fontSize = 20.sp,
                         )

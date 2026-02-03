@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.example.project.ioDispatcher
 import org.example.project.repository.PixelRepository
-import org.example.project.utill.DisplayQuestion
-import org.example.project.utill.Question
+import org.example.project.utill.PostUI
+import org.example.project.utill.Post
 
-class QuestionViewModel(): ViewModel() {
-    private val _uiState = MutableStateFlow(QuestionUiState(isLoading = true))
-    val uiState: StateFlow<QuestionUiState> = _uiState.asStateFlow()
+class PostViewModel(): ViewModel() {
+    private val _uiState = MutableStateFlow(PostUiState(isLoading = true))
+    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
     private val repository = PixelRepository(
         HttpClient{
             install(ContentNegotiation) {
@@ -32,19 +32,19 @@ class QuestionViewModel(): ViewModel() {
     )
 
     init{
-        loadQuestion()
+        loadPost()
     }
 
-    fun loadQuestion(){
+    fun loadPost(){
         viewModelScope.launch(ioDispatcher) {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try{
-                val question = repository.getQuestionList()
-                val displayQuestion = question.map { it.toDisplay() }
+                val posts = repository.getPost()
+                val postsUi = posts.map { it.toDisplay() }
 
                 _uiState.update{
                     it.copy(
-                        questionList = displayQuestion,
+                        postList = postsUi,
                         isLoading = false,
                         error = null,
                     )
@@ -56,14 +56,13 @@ class QuestionViewModel(): ViewModel() {
     }
 }
 
-fun Question.toDisplay(): DisplayQuestion{
-    return DisplayQuestion(
+fun Post.toDisplay(): PostUI{
+    return PostUI(
         title = this.title,
-        writer = this.writer,
+        author = this.author,
         tag = this.tag,
         content = this.content,
         createdAt = this.createdAt,
         category = this.category,
-        goodsName = this.goodsName
     )
 }

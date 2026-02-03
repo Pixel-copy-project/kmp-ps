@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.katalk
 import kmpproject.composeapp.generated.resources.main_banner_1
@@ -45,18 +46,20 @@ import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground0
 import org.example.project.ui.theme.SectionBackground
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.NoticeList
 import org.example.project.viewmodel.GoodsViewModel
+import org.example.project.viewmodel.PostViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MainScreen(
     onNavigate: (NavigationEvent) -> Unit,
-    viewModel: GoodsViewModel = GoodsViewModel()
+    viewModel: GoodsViewModel = GoodsViewModel(),
+    postViewModel: PostViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
     val goodsUiState by viewModel.uiState.collectAsState()
+    val postUiState by postViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -112,12 +115,14 @@ fun MainScreen(
                             .padding(top = 12.dp)
                             .align(Alignment.Center)
                     ) {
-                        NoticeList.take(4).forEach {
+                        postUiState.postList.take(4).forEach {
                             PostTitleComponent(
                                 tag = it.tag,
                                 category = it.category,
                                 title = it.title,
                                 fontSize = 14,
+                                author = it.author,
+                                content = it.content,
                                 onNavigate = onNavigate
                             )
 

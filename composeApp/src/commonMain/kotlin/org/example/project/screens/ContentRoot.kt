@@ -29,7 +29,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +38,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -252,9 +250,9 @@ fun ContentRoot(){
                 val post = backStackEntry.toRoute<AppNav.Post>()
                 PostScreen(
                     title = post.title,
-                    writer = post.writer,
+                    author = post.author,
                     tag = post.tag,
-                    postCategory = post.postCategory,
+                    category = post.category,
                     content = post.content,
                     createdAt = post.createdAt,
                     onNavigate = navController::handleNavigation,
@@ -266,7 +264,7 @@ fun ContentRoot(){
             composable<AppNav.PostEdit>{ backStackEntry ->
                 val category = backStackEntry.toRoute<AppNav.PostEdit>()
                 PostEditScreen(
-                    postCategory = category.postCategory,
+                    category = category.postCategory,
                     onNavigate = navController::handleNavigation
                 )
             }

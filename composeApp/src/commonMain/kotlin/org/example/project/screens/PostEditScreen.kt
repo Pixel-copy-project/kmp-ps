@@ -21,15 +21,15 @@ import org.example.project.utill.NavigationEvent
 
 @Composable
 fun PostEditScreen(
-    postCategory: String = "Notice",
+    category: String? = "Notice",
     onNavigate: (NavigationEvent) -> Unit,
 ) {
     var dropdownExpanded: Boolean by remember { mutableStateOf(false) }
-    val category = when (postCategory) {
+    val category = when (category) {
         "Notice" -> "카테고리"
         else -> "문의상품"
     }
-    val categoryList: List<String> = when (postCategory) {
+    val categoryList: List<String> = when (category) {
         "Notice" -> listOf("지누 티비 트레이", "감자 저지")
         else -> listOf("아크릴 스탠드", "감자 저지")
     }

@@ -1,10 +1,10 @@
 package org.example.project.viewmodel
 
-import org.example.project.utill.DisplayAddress
+import org.example.project.utill.AddressUI
 
 data class AddressUiState(
-    val selectedAddress: DisplayAddress? = null,
-    var addressList: List<DisplayAddress> = emptyList(),
+    val selectedAddress: AddressUI? = null,
+    var addressList: List<AddressUI> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
 )

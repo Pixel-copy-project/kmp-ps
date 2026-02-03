@@ -9,18 +9,26 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.NoticeList
+import org.example.project.viewmodel.PostViewModel
 
 @Composable
-fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
+fun NoticeScreen(
+    onNavigate: (NavigationEvent) -> Unit,
+    postViewModel: PostViewModel = viewModel()
+) {
+    val postUiState by postViewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier.padding(horizontal = 12.dp)
     ) {
@@ -41,12 +49,14 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                 ){
-                    NoticeList.take(4).forEach { it ->
+                    postUiState.postList.take(4).forEach { it ->
                         PostTitleComponent(
                             category = it.category,
                             tag = it.tag,
                             title = it.title,
                             fontSize = 16,
+                            author = it.author,
+                            content = it.content,
                             onNavigate = onNavigate
                         )
                     }
@@ -103,12 +113,14 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                NoticeList.take(10).forEach{ it ->
+                postUiState.postList.take(10).forEach{ it ->
                     PostTitleComponent(
                         category = it.category,
                         tag = it.tag,
                         title = it.title,
                         fontSize = 18,
+                        author = it.author,
+                        content = it.content,
                         onNavigate = onNavigate
                     )
                 }
@@ -119,7 +131,7 @@ fun NoticeScreen(onNavigate: (NavigationEvent) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
         ){
-            val page = (NoticeList.size / 10) + 1
+            val page = (postUiState.postList.size / 10) + 1
             for(i in 1..page){
                 TextButton(
                     onClick = {},

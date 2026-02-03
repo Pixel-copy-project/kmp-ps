@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 import org.example.project.ioDispatcher
 import org.example.project.repository.PixelRepository
 import org.example.project.utill.Address
-import org.example.project.utill.DisplayAddress
+import org.example.project.utill.AddressUI
 
 class AddressViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(AddressUiState(isLoading = true))
@@ -54,7 +54,7 @@ class AddressViewModel(): ViewModel() {
             }
         }
     }
-    fun addAddress(newAddress: DisplayAddress) {
+    fun addAddress(newAddress: AddressUI) {
         _uiState.update { currentState ->
             currentState.copy(
                 addressList = currentState.addressList + newAddress
@@ -62,13 +62,13 @@ class AddressViewModel(): ViewModel() {
         }
     }
 
-    fun selectAddress(address: DisplayAddress){
+    fun selectAddress(address: AddressUI){
         _uiState.update { it.copy(selectedAddress = address) }
     }
 }
 
-fun Address.toDisplay(): DisplayAddress {
-    return DisplayAddress(
+fun Address.toDisplay(): AddressUI {
+    return AddressUI(
         addressName = this.addressName,
         addressDetail = this.addressDetail,
         addressRoad = this.addressRoad,

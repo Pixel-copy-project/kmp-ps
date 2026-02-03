@@ -4,13 +4,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import org.example.project.utill.Product
-import org.example.project.utill.Notice
-import org.example.project.utill.QaTag
-import org.example.project.utill.Question
+import org.example.project.utill.Post
 import org.example.project.utill.Address
+import org.example.project.viewmodel.Faq
 
 class PixelRepository(private val client: HttpClient):
-    GoodsRepository, NoticeRepository, QuestionRepository, CartRepository, AddressRepository
+    GoodsRepository, PostRepository, CartRepository, AddressRepository, FaqRepository
 {
     private val goodsList = listOf<Product>(
         Product(
@@ -71,232 +70,101 @@ class PixelRepository(private val client: HttpClient):
         ),
     )
 
-    private val noticeList = listOf<Notice>(
-        Notice(
-            title = "아구이뽀 맥주컵 굿즈",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "배송 지연 안내",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = " 나나양 점착메모지/스티커/아크릴 스탠드",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "아구이뽀 맥주컵 굿즈",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "배송 지연 안내",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "아구이뽀 맥주컵 굿즈",
-            category = "Notice",
-            tag = "[지누 티비 트레이]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "배송 지연 안내",
-            category = "Notice",
-            tag = "[지누 티비 트레이]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "배송 지연 안내",
-            category = "Notice",
-            tag = "[지누 티비 트레이]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[신규 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[설백 6주년 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[설백 6주년 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[설백 6주년 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-        Notice(
-            title = "추가 배송 지연 안내",
-            category = "Notice",
-            tag = "[설백 6주년 굿즈]",
-            writer = "관리자",
-            content = "공지사항",
-            createdAt = "2025-11-18"
-        ),
-    )
-    val questionList = listOf(
-        Question(
+    val postLists = listOf(
+        Post(
             title = "추가 배송 지연 안내 1",
             category = "[답변 전]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-11",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내 2",
             category = "[답변 전]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-12",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내 3",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-13",
-            tag = QaTag.COMPLETE,
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내 4",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-14",
-            tag = QaTag.COMPLETE,
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내 5",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
-            tag = QaTag.COMPLETE,
             createdAt = "2025-11-15",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내 6",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-16",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
-            tag = QaTag.COMPLETE,
             createdAt = "2025-11-18",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
-            tag = QaTag.COMPLETE,
             createdAt = "2025-11-18",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
             createdAt = "2025-11-18",
-            goodsName = "지누 티비 트레이"
-
+            tag = "지누 티비 트레이"
+        ),
+        Post(
+            title = "추가 배송 지연 안내",
+            category = "[답변 완료]",
+            author = "시청자1",
+            content = "공지사항",
+            createdAt = "2025-11-18",
+            tag = "지누 티비 트레이"
 
         ),
-        Question(
+        Post(
             title = "추가 배송 지연 안내",
             category = "[답변 완료]",
-            writer = "시청자1",
+            author = "시청자1",
             content = "공지사항",
-            tag = QaTag.COMPLETE,
             createdAt = "2025-11-18",
-            goodsName = "지누 티비 트레이"
-
-        ),
-        Question(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            writer = "시청자1",
-            content = "공지사항",
-            tag = QaTag.COMPLETE,
-            createdAt = "2025-11-18",
-            goodsName = "지누 티비 트레이"
+            tag = "지누 티비 트레이"
 
         ),
     )
@@ -334,20 +202,12 @@ class PixelRepository(private val client: HttpClient):
         return client.get("http://10.0.2.2:8080/products/byName/$name").body()
     }
 
-    override suspend fun getNoticeList(): List<Notice> {
-        return noticeList
+    override suspend fun getPost(): List<Post> {
+        return client.get("http://10.0.2.2:8080/post").body()
     }
 
-    override suspend fun getNoticeByTitle(title: String): Notice? {
-        return noticeList.find { it.title == title }
-    }
-
-    override suspend fun getQuestionList(): List<Question> {
-        return questionList.sortedByDescending { it.createdAt }
-    }
-
-    override suspend fun getQuestionByTitle(title: String): Question? {
-        return questionList.find { it.title == title }
+    override suspend fun getPostByTitle(title: String): Post? {
+        return client.get("http://10.0.2.2:8080/post/byTitle/$title").body()
     }
 
     override suspend fun getCart(): List<Product> {
@@ -356,5 +216,9 @@ class PixelRepository(private val client: HttpClient):
 
     override suspend fun getAddressList(): List<Address> {
         return addressList
+    }
+
+    override suspend fun getAllFaq(): List<Faq> {
+        return client.get("http://10.0.2.2:8080/faq").body()
     }
 }

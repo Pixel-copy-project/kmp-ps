@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.example.project.repository.PixelRepository
-import org.example.project.utill.DisplayCartItem
+import org.example.project.utill.CartUI
 
 class CartViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(CartUiState())
@@ -40,9 +40,9 @@ class CartViewModel(): ViewModel() {
     }
     private fun loadCartItems() {
         val sampleItems = listOf(
-            DisplayCartItem("무선 이어폰", 89000, 1, description = "11ffwqg", true),
-            DisplayCartItem("노트북 거치대", 35000, 2, description = "11ffwqg", true),
-            DisplayCartItem("USB-C 케이블", 12000, 3,  description = "11ffwqg",true)
+            CartUI("무선 이어폰", 89000, 1, description = "11ffwqg", true),
+            CartUI("노트북 거치대", 35000, 2, description = "11ffwqg", true),
+            CartUI("USB-C 케이블", 12000, 3,  description = "11ffwqg",true)
         )
         _uiState.update {
             it.copy(items = sampleItems)

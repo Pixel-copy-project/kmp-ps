@@ -57,9 +57,9 @@ sealed class AppNav {
     @Serializable
     data class Post(
         val title: String,
-        val writer: String,
-        val tag: String,
-        val postCategory: String,
+        val author: String,
+        val tag: String?,
+        val category: String?,
         val content: String,
         val createdAt: String,
     )
@@ -69,7 +69,7 @@ sealed class AppNav {
 
     @Serializable
     data class PostEdit(
-        val postCategory: String,
+        val postCategory: String?,
     )
 
     @Serializable
@@ -108,16 +108,16 @@ sealed interface NavigationEvent {
     data object NavigateToFAQ : NavigationEvent
     data class NavigateToPost(
         val title: String,
-        val writer: String,
-        val tag: String,
-        val postCategory: String,
+        val author: String,
+        val tag: String?,
+        val category: String?,
         val content: String,
         val createdAt: String,
     ) : NavigationEvent
 
     data object NavigateToReview : NavigationEvent
     data class NavigateToPostEdit(
-        val postCategory: String,
+        val category: String?,
     ) : NavigationEvent
     data class NavigateToReviewEdit(
         val reviewItem: String? = null,
@@ -156,9 +156,9 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
         is NavigationEvent.NavigateToPost -> navigate(
             AppNav.Post(
                 event.title,
-                event.writer,
+                event.author,
                 event.tag,
-                event.postCategory,
+                event.category,
                 event.content,
                 event.createdAt,
             )
@@ -166,7 +166,7 @@ fun NavHostController.handleNavigation(event: NavigationEvent) {
         NavigationEvent.NavigateToReview -> navigate(AppNav.Review)
         is NavigationEvent.NavigateToPostEdit -> navigate(
                 AppNav.PostEdit(
-                    event.postCategory,
+                    event.category,
                 )
             )
         is NavigationEvent.NavigateToReviewEdit -> navigate(

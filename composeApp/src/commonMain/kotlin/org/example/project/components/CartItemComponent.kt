@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
 import kmpproject.composeapp.generated.resources.goods_1
 import org.example.project.formatNumberWithComma
-import org.example.project.utill.DisplayCartItem
+import org.example.project.utill.CartUI
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CartItemComponent(
     rootModifier: Modifier = Modifier,
-    goodsItem: DisplayCartItem,
+    goodsItem: CartUI,
     onCheckedChange: () -> Unit,
     onQuantityChange: (Int) -> Unit,
     onRemove: () -> Unit

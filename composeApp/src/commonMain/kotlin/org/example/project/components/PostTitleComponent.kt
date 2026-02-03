@@ -16,11 +16,12 @@ import org.example.project.utill.NavigationEvent
 
 @Composable
 fun PostTitleComponent(
-    tag: String,
-    category: String,
+    tag: String?,
+    category: String?,
     title: String,
+    content: String,
+    author: String,
     fontSize: Int,
-    goodsName: String? = null,
     onNavigate: (NavigationEvent) -> Unit,
 ) {
     Row(
@@ -31,9 +32,9 @@ fun PostTitleComponent(
                         NavigationEvent.NavigateToPost(
                             title = title,
                             tag = tag,
-                            postCategory = category,
-                            content = "wgwgwgewgwehewhew",
-                            writer = "wf",
+                            category = category,
+                            content = content,
+                            author = author,
                             createdAt = "wf",)
                     )
                 }
@@ -42,7 +43,7 @@ fun PostTitleComponent(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = tag,
+            text = "[${tag ?: ""}]",
             fontSize = fontSize.sp,
             color = Color(0xFF888888)
         )

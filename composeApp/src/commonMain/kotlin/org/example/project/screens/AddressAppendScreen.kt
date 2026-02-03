@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.utill.DisplayAddress
+import org.example.project.utill.AddressUI
 import org.example.project.utill.NavigationEvent
 import org.example.project.viewmodel.AddressViewModel
 
@@ -40,26 +40,26 @@ fun AddressAppendScreen(
         }
     }
 
-    val address: List<DisplayAddress> = listOf(
-        DisplayAddress(
+    val address: List<AddressUI> = listOf(
+        AddressUI(
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
-        DisplayAddress(
+        AddressUI(
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
-        DisplayAddress(
+        AddressUI(
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
-        DisplayAddress(
+        AddressUI(
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
@@ -258,7 +258,7 @@ fun AddressAppendScreen(
                                 return@OutlinedButton
                             }
                             addressViewModel.addAddress(
-                                newAddress = DisplayAddress(
+                                newAddress = AddressUI(
                                     addressName = addressNameState.text.toString(),
                                     addressRoad = addressSelected?.addressRoad!!,
                                     addressZipCode = addressSelected?.addressZipCode!!,

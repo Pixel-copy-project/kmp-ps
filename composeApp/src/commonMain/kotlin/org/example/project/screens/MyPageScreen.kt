@@ -23,12 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.components.BuyItemComponent
 import org.example.project.components.GoodsReviewComponent
 import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground0
 import org.example.project.utill.NavigationEvent
-import org.example.project.utill.QuestionList
 
 @Composable
 fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
@@ -126,16 +124,17 @@ fun MyPageScreen(onNavigate: (NavigationEvent) -> Unit) {
                         )
                     }
                 }
-                QuestionList.take(3).forEach {
+                /*PostLists.take(3).forEach {
                     PostTitleComponent(
-                        tag = it.tag.answer,
+                        tag = it.tag,
                         title = it.title,
                         category = it.category,
                         onNavigate = onNavigate,
                         fontSize = 18,
-                        goodsName = it.goodsName,
+                        author = it.author,
+                        content = it.content,
                     )
-                }
+                }*/
             }
         }
         Spacer(modifier = Modifier.height(30.dp))

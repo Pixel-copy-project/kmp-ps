@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.Dispatchers
+import io.ktor.utils.io.ioDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,12 +14,11 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.example.project.ioDispatcher
 import org.example.project.repository.PixelRepository
-import org.example.project.utill.DisplayNotice
-import org.example.project.utill.Notice
 
-class NoticeViewModel(): ViewModel() {
-    private val _uiState = MutableStateFlow(NoticeUiState(isLoading = true))
-    val uiState: StateFlow<NoticeUiState> = _uiState.asStateFlow()
+class FAQViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(FaqUiState())
+    val uiState: StateFlow<FaqUiState> = _uiState.asStateFlow()
+
     private val repository = PixelRepository(
         HttpClient{
             install(ContentNegotiation) {
@@ -33,38 +32,25 @@ class NoticeViewModel(): ViewModel() {
     )
 
     init{
-        loadNotice()
+        loadFAQ()
     }
 
-    fun loadNotice(){
+    private fun loadFAQ(){
         viewModelScope.launch(ioDispatcher) {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _uiState.update { it.copy(isLoading = true) }
             try{
-                val notice = repository.getNoticeList()
-                val displayNotice = notice.map { it.toDisplay() }
+                val faq = repository.getAllFaq()
 
-                _uiState.update{
+                _uiState.update {
                     it.copy(
-                        noticeList = displayNotice,
+                        faqList = faq,
                         isLoading = false,
-                        error = null,
+                        error = null
                     )
                 }
-            }catch(e: Exception){
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
         }
     }
-}
-
-
-fun Notice.toDisplay(): DisplayNotice{
-    return DisplayNotice(
-        title = this.title,
-        writer = this.writer,
-        tag = this.tag,
-        content = this.content,
-        createdAt = this.createdAt,
-        category = this.category
-    )
 }

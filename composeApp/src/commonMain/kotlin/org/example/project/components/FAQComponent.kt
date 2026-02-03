@@ -28,6 +28,8 @@ import org.example.project.ui.theme.AppBackground0
 
 @Composable
 fun FAQComponent(
+    question: String,
+    answer: String,
 ) {
     var isOpenAnswer by remember { mutableStateOf(false) }
 
@@ -54,7 +56,7 @@ fun FAQComponent(
                     )
             )
             Text(
-                text = "배송은 어떻게 순차적으로 진행되나요?",
+                text = question,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
@@ -76,7 +78,7 @@ fun FAQComponent(
         Spacer(modifier = Modifier.height(16.dp))
         if(isOpenAnswer){
             Text(
-                text = "이렇게 해서 저렇게 해서 배송이 빠르게 저렇게 이렇게 잘 됨",
+                text = answer,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier
