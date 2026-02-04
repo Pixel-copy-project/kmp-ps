@@ -17,8 +17,12 @@ import org.example.project.utill.PostUI
 import org.example.project.utill.Post
 
 class PostViewModel(): ViewModel() {
-    private val _uiState = MutableStateFlow(PostUiState(isLoading = true))
-    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
+    private val _postListUiState = MutableStateFlow(PostListUiState(isLoading = true))
+    val postListUiState: StateFlow<PostListUiState> = _postListUiState.asStateFlow()
+
+    private val _postDetailUiState = MutableStateFlow(PostDetailUiState(isLoading = true))
+    val postDetailUiState: StateFlow<PostDetailUiState> = _postDetailUiState.asStateFlow()
+
     private val repository = PixelRepository(
         HttpClient{
             install(ContentNegotiation) {
@@ -37,12 +41,13 @@ class PostViewModel(): ViewModel() {
 
     fun loadPost(){
         viewModelScope.launch(ioDispatcher) {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _postListUiState.update { it.copy(isLoading = true, error = null) }
             try{
                 val posts = repository.getPost()
+                println(posts.size)
                 val postsUi = posts.map { it.toDisplay() }
 
-                _uiState.update{
+                _postListUiState.update{
                     it.copy(
                         postList = postsUi,
                         isLoading = false,
@@ -50,9 +55,24 @@ class PostViewModel(): ViewModel() {
                     )
                 }
             }catch(e: Exception){
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
+                _postListUiState.update { it.copy(isLoading = false, error = e.message) }
+                e.printStackTrace()
             }
         }
+    }
+
+    fun getProductDetail(id: String){
+        /*viewModelScope.launch(ioDispatcher) {
+            _postListUiState.update { it.copy(isLoading = true) }
+            try{
+                val post = repository.getPostById(id)
+                _postDetailUiState.update{
+                    it.copy(
+                        postList =
+                    )
+                }
+            }
+        }*/
     }
 }
 

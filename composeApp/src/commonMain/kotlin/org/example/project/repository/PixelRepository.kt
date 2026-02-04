@@ -206,6 +206,10 @@ class PixelRepository(private val client: HttpClient):
         return client.get("http://10.0.2.2:8080/post").body()
     }
 
+    override suspend fun getPostById(id: String): Post? {
+        return client.get("http://10.0.2.2:8080/post/byId/$id").body()
+    }
+
     override suspend fun getPostByTitle(title: String): Post? {
         return client.get("http://10.0.2.2:8080/post/byTitle/$title").body()
     }

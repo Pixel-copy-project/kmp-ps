@@ -59,7 +59,7 @@ fun MainScreen(
 ) {
     val scrollState = rememberScrollState()
     val goodsUiState by viewModel.uiState.collectAsState()
-    val postUiState by postViewModel.uiState.collectAsState()
+    val postUiState by postViewModel.postListUiState.collectAsState()
 
     Column(
         modifier = Modifier

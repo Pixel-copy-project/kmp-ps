@@ -27,7 +27,7 @@ fun NoticeScreen(
     onNavigate: (NavigationEvent) -> Unit,
     postViewModel: PostViewModel = viewModel()
 ) {
-    val postUiState by postViewModel.uiState.collectAsState()
+    val postUiState by postViewModel.postListUiState.collectAsState()
 
     Column(
         modifier = Modifier.padding(horizontal = 12.dp)

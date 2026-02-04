@@ -4,5 +4,6 @@ import org.example.project.utill.Post
 
 interface PostRepository {
     suspend fun getPost(): List<Post>
+    suspend fun getPostById(id: String): Post?
     suspend fun getPostByTitle(title: String): Post?
 }
