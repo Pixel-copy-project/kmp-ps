@@ -69,6 +69,7 @@ class AddressViewModel(): ViewModel() {
 
 fun Address.toDisplay(): AddressUI {
     return AddressUI(
+        id = this.id,
         addressName = this.addressName,
         addressDetail = this.addressDetail,
         addressRoad = this.addressRoad,

@@ -46,7 +46,7 @@ import org.example.project.components.PostTitleComponent
 import org.example.project.ui.theme.AppBackground0
 import org.example.project.ui.theme.SectionBackground
 import org.example.project.utill.NavigationEvent
-import org.example.project.viewmodel.GoodsViewModel
+import org.example.project.viewmodel.ProductViewModel
 import org.example.project.viewmodel.PostViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,7 +54,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun MainScreen(
     onNavigate: (NavigationEvent) -> Unit,
-    viewModel: GoodsViewModel = GoodsViewModel(),
+    viewModel: ProductViewModel = ProductViewModel(),
     postViewModel: PostViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
@@ -188,7 +188,7 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                goodsUiState.goodsList.take(4).forEach {
+                goodsUiState.productList.take(4).forEach {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(0.48f)

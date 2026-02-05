@@ -36,7 +36,7 @@ class PostViewModel(): ViewModel() {
     )
 
     init{
-        loadPost()
+        loadPostMainScreen(5)
     }
 
     fun loadPost(){
@@ -47,6 +47,51 @@ class PostViewModel(): ViewModel() {
                 println(posts.size)
                 val postsUi = posts.map { it.toDisplay() }
 
+                _postListUiState.update{
+                    it.copy(
+                        postList = postsUi,
+                        isLoading = false,
+                        error = null,
+                    )
+                }
+            }catch(e: Exception){
+                _postListUiState.update { it.copy(isLoading = false, error = e.message) }
+                e.printStackTrace()
+            }
+        }
+    }
+    fun loadPostMainScreen(pageSize: Int = 4) {
+        viewModelScope.launch(ioDispatcher) {
+            _postDetailUiState.update { it.copy(isLoading = true, error = null) }
+            try{
+                val posts = repository.getPost(0, pageSize)
+                println(posts.size)
+                val postsUi = posts.map { it.toDisplay() }
+                _postListUiState.update{
+                    it.copy(
+                        postList = postsUi,
+                        isLoading = false,
+                        error = null,
+                    )
+                }
+            }catch(e: Exception){
+                _postListUiState.update { it.copy(isLoading = false, error = e.message) }
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun loadPostNextPage(pageSize: Int){
+        viewModelScope.launch(ioDispatcher) {
+            _postDetailUiState.update { it.copy(isLoading = true, error = null) }
+            try{
+                val posts = repository
+                    .getPost(
+                        _postListUiState.value.currentPage,
+                        pageSize)
+
+                println(posts.size)
+                val postsUi = posts.map { it.toDisplay() }
                 _postListUiState.update{
                     it.copy(
                         postList = postsUi,

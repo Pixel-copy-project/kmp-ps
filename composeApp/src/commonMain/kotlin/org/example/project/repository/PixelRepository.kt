@@ -3,13 +3,15 @@ package org.example.project.repository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.http.parameters
 import org.example.project.utill.Product
 import org.example.project.utill.Post
 import org.example.project.utill.Address
 import org.example.project.viewmodel.Faq
 
 class PixelRepository(private val client: HttpClient):
-    GoodsRepository, PostRepository, CartRepository, AddressRepository, FaqRepository
+    ProductRepository, PostRepository, CartRepository, AddressRepository, FaqRepository
 {
     private val goodsList = listOf<Product>(
         Product(
@@ -174,7 +176,7 @@ class PixelRepository(private val client: HttpClient):
     )
 
     var addressList: List<Address> = listOf(
-        Address(
+        /*Address(
             addressName = "우리집",
             addressDetail = "1004동 2005호",
             addressRoad = "경기 경기 중앙로 중앙로 20 30",
@@ -191,19 +193,38 @@ class PixelRepository(private val client: HttpClient):
             addressDetail = "1004동 2005호",
             addressRoad = "경기 경기 중앙로 중앙로 60 30",
             addressZipCode = "37748"
-        ),
+        ),*/
     )
 
-    override suspend fun getProducts(): List<Product>{
-        return client.get("http://10.0.2.2:8080/products").body()
+    override suspend fun getProducts(): List<Product> = getProducts(0, 20)
+
+    override suspend fun getProducts(
+        page: Int,
+        pageSize: Int
+    ): List<Product> {
+        return client.get("http://10.0.2.2:8080/products") {
+            parameter("page", page)  // ✅ 올바른 방법
+            parameter("pageSize", pageSize)
+        }.body()
     }
 
     override suspend fun getProductByName(name: String): Product? {
         return client.get("http://10.0.2.2:8080/products/byName/$name").body()
     }
 
-    override suspend fun getPost(): List<Post> {
-        return client.get("http://10.0.2.2:8080/post").body()
+    override suspend fun getPost(): List<Post> = getPost(1, 20)
+
+    override suspend fun getPost(
+        page: Int,
+        pageSize: Int
+    ): List<Post> {
+        return client.get("http://10.0.2.2:8080/post")
+        {
+            parameters {
+                "page" to page
+                "pageSize" to pageSize
+            }
+        }.body()
     }
 
     override suspend fun getPostById(id: String): Post? {

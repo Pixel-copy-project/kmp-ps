@@ -42,24 +42,28 @@ fun AddressAppendScreen(
 
     val address: List<AddressUI> = listOf(
         AddressUI(
+            id = "1",
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
         AddressUI(
+            id = "2",
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
         AddressUI(
+            id = "3",
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
             addressDetail = "3089동 12호"
         ),
         AddressUI(
+            id = "4",
             addressName = "새로운 집",
             addressRoad = "서울시 동대문구 동대로 107-20",
             addressZipCode = "123456",
@@ -259,6 +263,7 @@ fun AddressAppendScreen(
                             }
                             addressViewModel.addAddress(
                                 newAddress = AddressUI(
+                                    id = addressUiState.addressList.first().id,
                                     addressName = addressNameState.text.toString(),
                                     addressRoad = addressSelected?.addressRoad!!,
                                     addressZipCode = addressSelected?.addressZipCode!!,

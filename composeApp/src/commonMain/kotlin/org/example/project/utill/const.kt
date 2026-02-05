@@ -2,7 +2,9 @@ package org.example.project.utill
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class Address(
+    val id: String,
     val addressName: String,
     val addressRoad: String,
     val addressDetail: String,
@@ -10,6 +12,7 @@ data class Address(
 )
 
 data class AddressUI(
+    val id: String,
     val addressName: String,
     val addressRoad: String,
     val addressDetail: String,
