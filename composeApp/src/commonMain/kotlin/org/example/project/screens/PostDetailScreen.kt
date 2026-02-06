@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import org.example.project.utill.NavigationEvent
 
 @Composable
-fun PostScreen(
+fun PostDetailScreen(
     title: String,
     category: String?,
     tag: String?,

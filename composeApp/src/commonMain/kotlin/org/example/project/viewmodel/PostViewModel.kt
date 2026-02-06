@@ -36,23 +36,19 @@ class PostViewModel(): ViewModel() {
     )
 
     init{
-        loadPostMainScreen(5)
+        loadPostMainScreen(4)
     }
 
-    fun loadPost(){
-        viewModelScope.launch(ioDispatcher) {
+    fun loadPostCountByCategory(category: String){
+        viewModelScope.launch {
             _postListUiState.update { it.copy(isLoading = true, error = null) }
             try{
-                val posts = repository.getPost()
-                println(posts.size)
-                val postsUi = posts.map { it.toDisplay() }
-
-                _postListUiState.update{
+                val count = repository.getCountByCategory(category)
+                _postListUiState.update {
                     it.copy(
-                        postList = postsUi,
                         isLoading = false,
-                        error = null,
-                    )
+                        totalCount = count,
+                        error = null)
                 }
             }catch(e: Exception){
                 _postListUiState.update { it.copy(isLoading = false, error = e.message) }
@@ -60,16 +56,53 @@ class PostViewModel(): ViewModel() {
             }
         }
     }
+
+    fun updateCurrentPage(page: Int) {
+        _postListUiState.update { it.copy(currentPage = page) }
+    }
+
+    fun nextPage() {
+        _postListUiState.update { it.copy(currentPage = it.currentPage + 1) }
+    }
+
+    fun previousPage() {
+        if (_postListUiState.value.currentPage > 0) {
+            _postListUiState.update { it.copy(currentPage = it.currentPage - 1) }
+        }
+    }
+
+    fun loadPostByCategory(page:Int, pageSize:Int, category:String) {
+        viewModelScope.launch(ioDispatcher) {
+            _postListUiState.update { it.copy(isLoading = true, error = null) }
+            try{
+                val posts = repository.getPostByCategory(page = page, pageSize = pageSize, category = category)
+                val postsUi = posts.map { it.toDisplay() }
+                val count = repository.getCountByCategory(category)
+                _postListUiState.update{
+                    it.copy(
+                        postList = postsUi,
+                        isLoading = false,
+                        error = null,
+                        totalCount = count,
+                    )
+                }
+            }catch(e: Exception){
+                _postListUiState.update { it.copy(isLoading = false, error = e.message) }
+                e.printStackTrace()
+            }
+        }
+
+    }
     fun loadPostMainScreen(pageSize: Int = 4) {
         viewModelScope.launch(ioDispatcher) {
             _postDetailUiState.update { it.copy(isLoading = true, error = null) }
             try{
                 val posts = repository.getPost(0, pageSize)
-                println(posts.size)
+                println("Main Screen Call... ${posts.size}")
                 val postsUi = posts.map { it.toDisplay() }
                 _postListUiState.update{
                     it.copy(
-                        postList = postsUi,
+                        newPostList = postsUi,
                         isLoading = false,
                         error = null,
                     )
@@ -96,6 +129,7 @@ class PostViewModel(): ViewModel() {
                     it.copy(
                         postList = postsUi,
                         isLoading = false,
+                        currentPage = it.currentPage + 1,
                         error = null,
                     )
                 }

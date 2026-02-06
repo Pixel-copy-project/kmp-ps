@@ -72,105 +72,6 @@ class PixelRepository(private val client: HttpClient):
         ),
     )
 
-    val postLists = listOf(
-        Post(
-            title = "추가 배송 지연 안내 1",
-            category = "[답변 전]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-11",
-            tag = "지누 티비 트레이"
-        ),
-        Post(
-            title = "추가 배송 지연 안내 2",
-            category = "[답변 전]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-12",
-            tag = "지누 티비 트레이"
-        ),
-        Post(
-            title = "추가 배송 지연 안내 3",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-13",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내 4",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-14",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내 5",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-15",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내 6",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-16",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-18",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-18",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-18",
-            tag = "지누 티비 트레이"
-        ),
-        Post(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-18",
-            tag = "지누 티비 트레이"
-
-        ),
-        Post(
-            title = "추가 배송 지연 안내",
-            category = "[답변 완료]",
-            author = "시청자1",
-            content = "공지사항",
-            createdAt = "2025-11-18",
-            tag = "지누 티비 트레이"
-
-        ),
-    )
-
     var cart: List<Product> = listOf(
         goodsList[0], goodsList[1]
     )
@@ -203,7 +104,7 @@ class PixelRepository(private val client: HttpClient):
         pageSize: Int
     ): List<Product> {
         return client.get("http://10.0.2.2:8080/products") {
-            parameter("page", page)  // ✅ 올바른 방법
+            parameter("page", page)
             parameter("pageSize", pageSize)
         }.body()
     }
@@ -220,10 +121,28 @@ class PixelRepository(private val client: HttpClient):
     ): List<Post> {
         return client.get("http://10.0.2.2:8080/post")
         {
-            parameters {
-                "page" to page
-                "pageSize" to pageSize
-            }
+            parameter("page", page)
+            parameter("pageSize", pageSize)
+        }.body()
+    }
+
+    override suspend fun getPostByCategory(
+        category: String,
+        page: Int,
+        pageSize: Int
+    ): List<Post> {
+        return client.get("http://10.0.2.2:8080/post/byCategory/$category")
+        {
+            parameter("page", page)
+            parameter("pageSize", pageSize)
+            parameter("category", category)
+        }.body()
+    }
+
+    override suspend fun getCountByCategory(category: String): Int {
+        return client.get("http://10.0.2.2:8080/post/countByCategory/$category")
+        {
+            parameter("category", category)
         }.body()
     }
 

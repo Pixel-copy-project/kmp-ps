@@ -42,7 +42,6 @@ class ProductViewModel(): ViewModel() {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try{
                 val product = repository.getProducts(0, pageSize)
-                println(product.size)
                 val productUI = product.map { it.toDisplay() }
                 _uiState.update{
                     it.copy(

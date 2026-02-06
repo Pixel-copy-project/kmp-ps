@@ -61,6 +61,8 @@ fun MainScreen(
     val goodsUiState by viewModel.uiState.collectAsState()
     val postUiState by postViewModel.postListUiState.collectAsState()
 
+    postViewModel.loadPostMainScreen(4)
+
     Column(
         modifier = Modifier
             .background(AppBackground0)
@@ -115,7 +117,7 @@ fun MainScreen(
                             .padding(top = 12.dp)
                             .align(Alignment.Center)
                     ) {
-                        postUiState.postList.take(4).forEach {
+                        postUiState.newPostList.forEach {
                             PostTitleComponent(
                                 tag = it.tag,
                                 category = it.category,

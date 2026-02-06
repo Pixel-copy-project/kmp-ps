@@ -248,7 +248,7 @@ fun ContentRoot(){
             }
             composable<AppNav.Post>{ backStackEntry ->
                 val post = backStackEntry.toRoute<AppNav.Post>()
-                PostScreen(
+                PostDetailScreen(
                     title = post.title,
                     author = post.author,
                     tag = post.tag,

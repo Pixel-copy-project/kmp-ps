@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowLeft
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -28,6 +31,14 @@ fun NoticeScreen(
     postViewModel: PostViewModel = viewModel()
 ) {
     val postUiState by postViewModel.postListUiState.collectAsState()
+
+    LaunchedEffect(postUiState.currentPage){
+        postViewModel.loadPostByCategory(postUiState.currentPage, 10, "공지사항")
+    }
+
+    /*LaunchedEffect(Unit){
+        postViewModel.loadPostMainScreen(4)
+    }*/
 
     Column(
         modifier = Modifier.padding(horizontal = 12.dp)
@@ -49,7 +60,7 @@ fun NoticeScreen(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                 ){
-                    postUiState.postList.take(4).forEach { it ->
+                    postUiState.newPostList.forEach { it ->
                         PostTitleComponent(
                             category = it.category,
                             tag = it.tag,
@@ -131,13 +142,44 @@ fun NoticeScreen(
             modifier = Modifier
                 .fillMaxWidth()
         ){
-            val page = (postUiState.postList.size / 10) + 1
-            for(i in 1..page){
+            IconButton(
+                onClick = {
+                    postViewModel.previousPage()
+                },
+            ){
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowLeft,
+                    contentDescription = null,
+                )
+            }
+            for(i in 1..5){
                 TextButton(
-                    onClick = {},
+                    colors = if(((postUiState.currentPage / 5) * 5 + i - 1) == postUiState.currentPage){
+                        ButtonDefaults.textButtonColors(
+                            containerColor = Color.LightGray,
+                            contentColor = Color.DarkGray,
+                        )
+                    }else{
+                        ButtonDefaults.textButtonColors()
+                    },
+                    onClick = {
+                        postViewModel.updateCurrentPage(
+                            (postUiState.currentPage / 5) * 5 + i - 1
+                        )
+                    },
                 ){
-                    Text("$i")
+                    Text("${(postUiState.currentPage / 5) * 5 + i}")
                 }
+            }
+            IconButton(
+                onClick = {
+                    postViewModel.nextPage()
+                },
+            ){
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowRight,
+                    contentDescription = null,
+                )
             }
         }
     }
