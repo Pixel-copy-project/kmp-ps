@@ -33,14 +33,17 @@ fun GoodsListScreen(
     val productUiState by viewModel.uiState.collectAsState()
     val listState = rememberLazyGridState()
 
-    // 스크롤이 끝에 도달했는지 감지
+    // 스크롤 감지 최적화
     LaunchedEffect(listState) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+        snapshotFlow {
+            listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        }
             .collect { lastVisibleIndex ->
+                val threshold = productUiState.productList.size - 5
                 if (lastVisibleIndex != null &&
-                    lastVisibleIndex >= productUiState.productList.size - 5 && // 끝에서 5개 전에 로드 시작
+                    lastVisibleIndex >= threshold &&
                     !productUiState.isLoading &&
-                    productUiState.error == null
+                    productUiState.hasMorePage // 이 체크가 중요!
                 ) {
                     viewModel.loadProductNextPage()
                 }
@@ -51,44 +54,57 @@ fun GoodsListScreen(
         columns = GridCells.Fixed(2),
         state = listState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.padding(12.dp) // 여기서 패딩 처리
     ) {
-        if (productUiState.error == null) {
-            items(productUiState.productList.size) { index ->
-                val goods = productUiState.productList[index]
+        // ✅ key를 사용하여 아이템 재사용 최적화
+        items(
+            count = productUiState.productList.size,
+            key = { index -> productUiState.productList[index].id } // 고유 ID 사용
+        ) { index ->
+            val goods = productUiState.productList[index]
+
+            // Box 제거하고 직접 컴포넌트 사용
+            GoodsComponent(
+                goodsName = goods.name,
+                goodsDescription = goods.description,
+                goodsPrice = goods.price,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(324.dp),
+                quantity = goods.quantity,
+                onNavigate = onNavigate,
+                imageName = goods.imageName
+            )
+        }
+
+        // 로딩 인디케이터
+        if (productUiState.isLoading && productUiState.productList.isNotEmpty()) {
+            item(
+                key = "loading",
+                span = { GridItemSpan(2) }
+            ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.48f)
-                        .height(324.dp)
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    GoodsComponent(
-                        goodsName = goods.name,
-                        goodsDescription = goods.description,
-                        goodsPrice = goods.price,
-                        modifier = Modifier.fillMaxSize(),
-                        quantity = goods.quantity,
-                        onNavigate = onNavigate,
-                        imageName = goods.imageName
-                    )
+                    CircularProgressIndicator()
                 }
             }
+        }
 
-            // 로딩 인디케이터
-            if (productUiState.isLoading) {
-                item(span = { GridItemSpan(2) }) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-            }
-        } else {
-            item(span = { GridItemSpan(2) }) {
-                Text("${productUiState.error}")
+        // 에러 처리
+        if (productUiState.error != null) {
+            item(
+                key = "error",
+                span = { GridItemSpan(2) }
+            ) {
+                Text(
+                    text = "오류: ${productUiState.error}",
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
     }

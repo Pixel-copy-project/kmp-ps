@@ -58,32 +58,39 @@ class ProductViewModel(): ViewModel() {
     }
 
     fun loadProductNextPage(pageSize: Int = 20){
-        println("Start Fetching... Current Page: ${_uiState.value.currentPage}")
-        if (_uiState.value.isLoading || !_uiState.value.hasMorePage) return
+        // 중복 호출 방지 강화
+        if (_uiState.value.isLoading || !_uiState.value.hasMorePage) {
+            println("Skipped - isLoading: ${_uiState.value.isLoading}, hasMorePage: ${_uiState.value.hasMorePage}")
+            return
+        }
 
         viewModelScope.launch(ioDispatcher) {
-            println("In ViewModelScope... Current Page: ${_uiState.value.currentPage}")
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            // 즉시 로딩 상태로 변경하여 중복 호출 방지
+            _uiState.update { it.copy(isLoading = true) }
+
             try{
-                println("In TryCatch... Current Page: ${_uiState.value.currentPage}")
                 val newProduct = repository
                     .getProducts(_uiState.value.currentPage, pageSize)
-                println("Fetching After... Current Page: ${_uiState.value.currentPage}")
+
                 val productUI = newProduct.map { it.toDisplay() }
+
                 _uiState.update{
                     it.copy(
                         productList = it.productList + productUI,
                         currentPage = it.currentPage + 1,
                         isLoading = false,
                         error = null,
-                        hasMorePage = newProduct.size == 20
+                        hasMorePage = newProduct.size >= pageSize // >= 로 변경
                     )
                 }
-            }catch(e: Exception){
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
+            } catch(e: Exception){
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message
+                    )
+                }
                 e.printStackTrace()
-            }finally {
-                println("Finally Current Page: ${_uiState.value.currentPage}")
             }
         }
     }
