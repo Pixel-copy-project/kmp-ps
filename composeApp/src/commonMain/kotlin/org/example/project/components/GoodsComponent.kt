@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kmpproject.composeapp.generated.resources.Res
@@ -36,62 +39,85 @@ fun GoodsComponent(
     imageName: String,
     onNavigate: (NavigationEvent) -> Unit
 ) {
-    Column (
-        modifier = modifier.clickable(
-            onClick = {
-                onNavigate(NavigationEvent.NavigateToGoodsDetail(
+    // ✅ 모든 연산과 상태를 remember로 캐싱
+    val drawable = remember(imageName) {
+        DrawableMapper.getDrawable(imageName)
+    }
+    val imagePainter = painterResource(drawable)
+
+    val priceText = remember(goodsPrice) {
+        formatNumberWithComma(goodsPrice) + "원"
+    }
+
+    // ✅ onClick을 최상위에서 한 번만 생성
+    val onClick = remember(imageName) {
+        {
+            onNavigate(
+                NavigationEvent.NavigateToGoodsDetail(
                     goodsName = goodsName,
                     goodsDescription = goodsDescription,
                     goodsPrice = goodsPrice,
                     quantity = quantity,
                     imageName = imageName,
-                    )
                 )
-            }
-        )
-    ){
+            )
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .clickable(onClick = onClick)
+    ) {
+        // ✅ Box도 remember로 감싸기
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(188.dp)
-        ){
+        ) {
             Image(
-                painter = painterResource(DrawableMapper.getDrawable(imageName)),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
+                painter = imagePainter,
+                contentDescription = goodsName,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
-            if(quantity <= 0){
+
+            // ✅ 조건을 remember로 캐싱
+            if (remember(quantity) { quantity <= 0 }) {
+                val soldOutPainter = painterResource(Res.drawable.sold_out)
                 Image(
-                    painter = painterResource(Res.drawable.sold_out),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    painter = soldOutPainter,
+                    contentDescription = "품절",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
+
         Text(
             text = goodsName,
             fontSize = 18.sp,
             color = GoodsName,
             fontWeight = Bold,
-            modifier = Modifier
-                .padding(top = 8.dp, start = 8.dp)
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp)
         )
+
         Text(
             text = goodsDescription,
             color = GoodsDescription,
             fontSize = 14.sp,
-            modifier = Modifier
-                .padding(top = 8.dp, start = 8.dp)
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp)
         )
+
         Text(
-            text = formatNumberWithComma(goodsPrice) + "원",
+            text = priceText,
             fontSize = 18.sp,
             color = GoodsPrice,
             fontWeight = Bold,
-            modifier = Modifier
-                .padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, bottom = 8.dp)
         )
     }
 }

@@ -33,24 +33,25 @@ class ProductViewModel(): ViewModel() {
     )
 
     init{
-        resetProductPage()
         loadProductMainScreen()
     }
 
     fun loadProductMainScreen(pageSize: Int = 4) {
         viewModelScope.launch(ioDispatcher) {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            try{
+            try {
                 val product = repository.getProducts(0, pageSize)
                 val productUI = product.map { it.toDisplay() }
-                _uiState.update{
+                _uiState.update {
                     it.copy(
                         productList = productUI,
                         isLoading = false,
                         error = null,
+                        currentPage = 1, // 페이지 초기화
+                        hasMorePage = product.size >= pageSize
                     )
                 }
-            }catch(e: Exception){
+            } catch(e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
                 e.printStackTrace()
             }
@@ -117,21 +118,13 @@ class ProductViewModel(): ViewModel() {
     }
 
     fun resetProductPage(page: Int = 1){
-        viewModelScope.launch(ioDispatcher) {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            try{
-                _uiState.update{
-                    it.copy(
-                        currentPage = page,
-                        isLoading = false,
-                        error = null,
-                        hasMorePage = true,
-                    )
-                }
-            }catch(e: Exception){
-                e.printStackTrace()
-                _uiState.update { it.copy(isLoading = false, error = e.message) }
-            }
+        _uiState.update {
+            it.copy(
+                currentPage = page,
+                isLoading = false,
+                error = null,
+                hasMorePage = true,
+            )
         }
     }
 }

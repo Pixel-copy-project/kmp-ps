@@ -1,5 +1,6 @@
 package org.example.project.utill
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -28,7 +29,7 @@ data class Product(
     val description: String,
     val imgName: String,
 )
-
+@Immutable
 data class ProductUI(
     val id: String,
     val name: String,

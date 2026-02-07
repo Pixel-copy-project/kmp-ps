@@ -12,7 +12,10 @@ class AndroidPlatform : Platform {
 actual val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual fun formatNumberWithComma(number: Int): String{
-    val decimalFormat = DecimalFormat("##,###")
-    return decimalFormat.format(number)
+actual fun formatNumberWithComma(number: Int): String {
+    return number.toString()
+        .reversed()
+        .chunked(3)
+        .joinToString(",")
+        .reversed()
 }
